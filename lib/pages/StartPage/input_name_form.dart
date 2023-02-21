@@ -15,8 +15,10 @@ class InputNameForm extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const TextField(
-            decoration: InputDecoration(
+          Form(
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            child: TextFormField(
+              decoration: const InputDecoration(
                 border: UnderlineInputBorder(),
                 hintText: "Enter a Nickname",
                 hintStyle: TextStyle(
@@ -24,17 +26,22 @@ class InputNameForm extends StatelessWidget {
                 ),
                 focusedBorder: UnderlineInputBorder(
                   borderSide: BorderSide(
-                    color: AppColors.primary,
+                    // color: AppColors.primary,
                     width: 2,
                   ),
-                )),
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              letterSpacing: 0.2,
-              color: AppColors.primary,
+                ),
+                errorStyle:
+                    TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              ),
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                letterSpacing: 0.2,
+                // color: AppColors.primary,
+              ),
+              textAlign: TextAlign.center,
+              validator: (value) => value!.isEmpty ? "Vui lòng nhập tên" : null,
             ),
-            textAlign: TextAlign.center,
           ),
           Padding(padding: EdgeInsets.only(top: size.height * 0.05)),
           ElevatedButton(
