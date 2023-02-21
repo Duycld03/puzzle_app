@@ -58,7 +58,11 @@ class AddQuestionPage extends StatelessWidget {
                     ])
                 .expand((w) => w),
             DropdownButton(
-              icon: const Icon(Icons.abc),
+              isExpanded: true,
+              underline: Container(
+                height: 2,
+                color: Colors.blue,
+              ),
               items: fake_categories
                   .asMap()
                   .entries
