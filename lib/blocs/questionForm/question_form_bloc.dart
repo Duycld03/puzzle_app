@@ -31,5 +31,12 @@ class QuestionFormBloc extends Bloc<QuestionFormEvent, QuestionFormState> {
   }
   Future<void> _submitForm(Emitter emit) async {
     print("submit");
+    print(state.question);
+    print("lựa chọn đúng là ${state.option}");
+    print(state.answerA);
+    print(state.answerB);
+    print(state.answerC);
+    print(state.answerD);
+    print(state.category);
   }
 }

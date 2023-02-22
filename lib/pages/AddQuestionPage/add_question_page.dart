@@ -3,11 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:puzzle_app/blocs/questionForm/question_form_bloc.dart';
 import 'package:puzzle_app/fake_data.dart';
 
-List<String> options = ["A", "B", "C", "D"];
+final List<String> options = ["A", "B", "C", "D"];
 
 class AddQuestionPage extends StatelessWidget {
   AddQuestionPage({super.key});
-  final _question = {'value': '', 'correct': options[0], 'options': options};
+  final _optionController =
+      options.map((o) => TextEditingController()).toList();
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +30,9 @@ class AddQuestionPage extends StatelessWidget {
                         labelText: 'Câu hỏi *', border: OutlineInputBorder()),
                     validator: (value) =>
                         value!.isEmpty ? "Vui lòng điền câu hỏi" : null,
+                    onChanged: (value) => context
+                        .read<QuestionFormBloc>()
+                        .add(QuestionChanged(question: value)),
                   ),
                   const SizedBox(height: 32),
                   const Text("Lựa chọn đúng"),
@@ -53,15 +57,38 @@ class AddQuestionPage extends StatelessWidget {
                       .entries
                       .map((entry) => [
                             TextFormField(
-                              // controller: _optionCtrls[entry.key],
-                              decoration: InputDecoration(
-                                labelText: "Lựa chọn ${entry.value}*",
-                                border: const OutlineInputBorder(),
-                              ),
-                              validator: (v) => v!.isEmpty
-                                  ? "Vui lòng điền lựa chọn ${entry.value}"
-                                  : null,
-                            ),
+                                controller: _optionController[entry.key],
+                                decoration: InputDecoration(
+                                  labelText: "Lựa chọn ${entry.value}*",
+                                  border: const OutlineInputBorder(),
+                                ),
+                                validator: (v) => v!.isEmpty
+                                    ? "Vui lòng điền lựa chọn ${entry.value}"
+                                    : null,
+                                onChanged: (value) {
+                                  switch (entry.key) {
+                                    case 0:
+                                      context
+                                          .read<QuestionFormBloc>()
+                                          .add(AnswerAChanged(answerA: value));
+                                      break;
+                                    case 1:
+                                      context
+                                          .read<QuestionFormBloc>()
+                                          .add(AnswerBChanged(answerB: value));
+                                      break;
+                                    case 2:
+                                      context
+                                          .read<QuestionFormBloc>()
+                                          .add(AnswerCChanged(answerC: value));
+                                      break;
+                                    case 3:
+                                      context
+                                          .read<QuestionFormBloc>()
+                                          .add(AnswerDChanged(answerD: value));
+                                      break;
+                                  }
+                                }),
                             const SizedBox(height: 32),
                           ])
                       .expand((w) => w),
