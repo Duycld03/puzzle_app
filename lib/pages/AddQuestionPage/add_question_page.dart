@@ -15,7 +15,6 @@ class AddQuestionPage extends StatelessWidget {
     return BlocProvider(
       create: (context) => QuestionFormBloc(),
       child: Scaffold(
-        appBar: AppBar(title: const Text("Câu hỏi")),
         body: BlocBuilder<QuestionFormBloc, QuestionFormState>(
           builder: (context, state) {
             return Form(

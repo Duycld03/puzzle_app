@@ -24,12 +24,6 @@ class InputNameForm extends StatelessWidget {
                 hintStyle: TextStyle(
                   color: AppColors.hintText,
                 ),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(
-                    // color: AppColors.primary,
-                    width: 2,
-                  ),
-                ),
                 errorStyle:
                     TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
               ),
@@ -45,11 +39,8 @@ class InputNameForm extends StatelessWidget {
           ),
           Padding(padding: EdgeInsets.only(top: size.height * 0.05)),
           ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primary,
-            ),
             onPressed: () {
-              Navigator.pushNamed(context, Routes.homePage);
+              Navigator.pushNamed(context, Routes.mainPage);
             },
             child: Container(
               decoration: BoxDecoration(

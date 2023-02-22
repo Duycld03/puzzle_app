@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       title: "Puzzle App",
       debugShowCheckedModeBanner: false,
-      initialRoute: Routes.addQuestionPage,
+      initialRoute: Routes.startPage,
       onGenerateRoute: router.Router.generateRoute,
     );
   }
