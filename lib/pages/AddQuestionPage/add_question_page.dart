@@ -6,16 +6,7 @@ import 'package:puzzle_app/fake_data.dart';
 final List<String> options = ["A", "B", "C", "D"];
 
 class AddQuestionPage extends StatelessWidget {
-  AddQuestionPage({super.key});
-  final _questionController = TextEditingController();
-  final _textController = options.map((o) => TextEditingController()).toList();
-
-  _clearForm() {
-    _questionController.text = "";
-    for (var c in _textController) {
-      c.text = "";
-    }
-  }
+  const AddQuestionPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +22,7 @@ class AddQuestionPage extends StatelessWidget {
                 padding: const EdgeInsets.all(32),
                 children: [
                   TextFormField(
-                      controller: _questionController,
+                      controller: state.questionCtrls,
                       decoration: const InputDecoration(
                           labelText: 'Câu hỏi *', border: OutlineInputBorder()),
                       validator: (value) =>
@@ -64,7 +55,7 @@ class AddQuestionPage extends StatelessWidget {
                       .entries
                       .map((entry) => [
                             TextFormField(
-                                controller: _textController[entry.key],
+                                controller: state.textCtrls[entry.key],
                                 decoration: InputDecoration(
                                   labelText: "Lựa chọn ${entry.value}*",
                                   border: const OutlineInputBorder(),
@@ -127,7 +118,6 @@ class AddQuestionPage extends StatelessWidget {
                     onPressed: () {
                       if (state.isValid) {
                         context.read<QuestionFormBloc>().add(SubmitForm());
-                        _clearForm();
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(

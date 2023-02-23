@@ -2,6 +2,8 @@ part of 'question_form_bloc.dart';
 
 @immutable
 class QuestionFormState {
+  final TextEditingController questionCtrls;
+  final List<TextEditingController> textCtrls;
   final String question;
   final String option;
   final String answerA;
@@ -18,6 +20,8 @@ class QuestionFormState {
     required this.answerC,
     required this.answerD,
     required this.category,
+    required this.questionCtrls,
+    required this.textCtrls,
   });
 
   bool get isValid =>
@@ -45,24 +49,32 @@ class QuestionFormState {
         answerC: answerC ?? this.answerC,
         answerD: answerD ?? this.answerD,
         category: category ?? this.category,
+        questionCtrls: questionCtrls,
+        textCtrls: textCtrls,
       );
 }
 
 class QuestionFormInitial extends QuestionFormState {
-  const QuestionFormInitial()
+  QuestionFormInitial()
       : super(
-          question: "",
-          option: "A",
-          answerA: "",
-          answerB: "",
-          answerC: "",
-          answerD: "",
-          category: 0,
-        );
+            question: "",
+            option: "A",
+            answerA: "",
+            answerB: "",
+            answerC: "",
+            answerD: "",
+            category: 0,
+            questionCtrls: TextEditingController(),
+            textCtrls: [
+              TextEditingController(),
+              TextEditingController(),
+              TextEditingController(),
+              TextEditingController(),
+            ]);
 }
 
 class ClearQuestionForm extends QuestionFormState {
-  const ClearQuestionForm()
+  ClearQuestionForm()
       : super(
           question: "",
           option: "A",
@@ -71,5 +83,12 @@ class ClearQuestionForm extends QuestionFormState {
           answerC: "",
           answerD: "",
           category: 0,
+          questionCtrls: TextEditingController(),
+          textCtrls: [
+            TextEditingController(),
+            TextEditingController(),
+            TextEditingController(),
+            TextEditingController(),
+          ],
         );
 }
