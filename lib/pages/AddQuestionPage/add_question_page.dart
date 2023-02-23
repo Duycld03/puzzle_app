@@ -7,8 +7,15 @@ final List<String> options = ["A", "B", "C", "D"];
 
 class AddQuestionPage extends StatelessWidget {
   AddQuestionPage({super.key});
-  final _optionController =
-      options.map((o) => TextEditingController()).toList();
+  final _questionController = TextEditingController();
+  final _textController = options.map((o) => TextEditingController()).toList();
+
+  _clearForm() {
+    _questionController.text = "";
+    for (var c in _textController) {
+      c.text = "";
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,15 +31,16 @@ class AddQuestionPage extends StatelessWidget {
                 padding: const EdgeInsets.all(32),
                 children: [
                   TextFormField(
-                    // controller: _questionCtrl,
-                    decoration: const InputDecoration(
-                        labelText: 'Câu hỏi *', border: OutlineInputBorder()),
-                    validator: (value) =>
-                        value!.isEmpty ? "Vui lòng điền câu hỏi" : null,
-                    onChanged: (value) => context
-                        .read<QuestionFormBloc>()
-                        .add(QuestionChanged(question: value)),
-                  ),
+                      controller: _questionController,
+                      decoration: const InputDecoration(
+                          labelText: 'Câu hỏi *', border: OutlineInputBorder()),
+                      validator: (value) =>
+                          value!.isEmpty ? "Vui lòng điền câu hỏi" : null,
+                      onChanged: (value) {
+                        context
+                            .read<QuestionFormBloc>()
+                            .add(QuestionChanged(question: value));
+                      }),
                   const SizedBox(height: 32),
                   const Text("Lựa chọn đúng"),
                   Row(
@@ -56,7 +64,7 @@ class AddQuestionPage extends StatelessWidget {
                       .entries
                       .map((entry) => [
                             TextFormField(
-                                controller: _optionController[entry.key],
+                                controller: _textController[entry.key],
                                 decoration: InputDecoration(
                                   labelText: "Lựa chọn ${entry.value}*",
                                   border: const OutlineInputBorder(),
@@ -117,7 +125,22 @@ class AddQuestionPage extends StatelessWidget {
                   const SizedBox(height: 32),
                   ElevatedButton(
                     onPressed: () {
-                      context.read<QuestionFormBloc>().add(SubmitForm());
+                      if (state.isValid) {
+                        context.read<QuestionFormBloc>().add(SubmitForm());
+                        _clearForm();
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            dismissDirection: DismissDirection.up,
+                            content: Text(
+                              "Vui lòng nhập đầy đủ thông tin!",
+                              style: TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        );
+                      }
                     },
                     child: const Padding(
                       padding: EdgeInsets.symmetric(vertical: 10),

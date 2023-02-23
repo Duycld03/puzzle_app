@@ -9,6 +9,7 @@ class QuestionFormState {
   final String answerC;
   final String answerD;
   final int category;
+
   const QuestionFormState({
     required this.question,
     required this.option,
@@ -18,6 +19,15 @@ class QuestionFormState {
     required this.answerD,
     required this.category,
   });
+
+  bool get isValid =>
+      question.isNotEmpty &&
+      option.isNotEmpty &&
+      answerA.isNotEmpty &&
+      answerB.isNotEmpty &&
+      answerC.isNotEmpty &&
+      answerD.isNotEmpty;
+
   QuestionFormState copyWith({
     String? question,
     String? option,
@@ -40,6 +50,19 @@ class QuestionFormState {
 
 class QuestionFormInitial extends QuestionFormState {
   const QuestionFormInitial()
+      : super(
+          question: "",
+          option: "A",
+          answerA: "",
+          answerB: "",
+          answerC: "",
+          answerD: "",
+          category: 0,
+        );
+}
+
+class ClearQuestionForm extends QuestionFormState {
+  const ClearQuestionForm()
       : super(
           question: "",
           option: "A",

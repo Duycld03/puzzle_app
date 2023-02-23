@@ -5,4 +5,5 @@ List<String> fake_categories = [
   "Digital marketing",
   "Kinh tế",
   "Xã hội",
+  "Khác",
 ];

@@ -2,7 +2,7 @@ import "package:flutter/material.dart";
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:puzzle_app/blocs/navbar/navbar_bloc.dart';
 import 'package:puzzle_app/pages/AddQuestionPage/add_question_page.dart';
-import 'package:puzzle_app/pages/HomePage/Home_page.dart';
+import 'package:puzzle_app/pages/HomePage/home_page.dart';
 import 'package:puzzle_app/pages/SettingPage/setting_page.dart';
 
 class MainPage extends StatelessWidget {

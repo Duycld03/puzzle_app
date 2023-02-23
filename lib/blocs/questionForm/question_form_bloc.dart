@@ -38,5 +38,6 @@ class QuestionFormBloc extends Bloc<QuestionFormEvent, QuestionFormState> {
     print(state.answerC);
     print(state.answerD);
     print(state.category);
+    emit(const ClearQuestionForm());
   }
 }
