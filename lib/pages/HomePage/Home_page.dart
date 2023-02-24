@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import 'package:puzzle_app/pages/HomePage/info_card.dart';
+import 'package:puzzle_app/routes/routes.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -44,7 +45,9 @@ class HomePage extends StatelessWidget {
           padding: EdgeInsets.all(5),
           child: Text("Chơi Ngay"),
         ),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context).pushNamed(Routes.playPage);
+        },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );

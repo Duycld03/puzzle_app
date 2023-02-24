@@ -30,19 +30,21 @@ class QuestionFormBloc extends Bloc<QuestionFormEvent, QuestionFormState> {
     on<SubmitForm>((event, emit) => _submitForm(emit));
   }
   Future<void> _submitForm(Emitter emit) async {
-    print("submit");
-    print(state.question);
-    print("lựa chọn đúng là ${state.option}");
-    print(state.answerA);
-    print(state.answerB);
-    print(state.answerC);
-    print(state.answerD);
-    print(state.category);
-    _clearForm();
-    emit(ClearQuestionForm());
+    if (state.isValid) {
+      print("submit");
+      print(state.question);
+      print("lựa chọn đúng là ${state.option}");
+      print(state.answerA);
+      print(state.answerB);
+      print(state.answerC);
+      print(state.answerD);
+      print(state.category);
+      _clearForm(emit);
+    }
   }
 
-  _clearForm() {
+  _clearForm(Emitter emit) {
+    emit(ClearQuestionForm());
     state.questionCtrls.clear();
     for (var c in state.textCtrls) {
       c.clear();

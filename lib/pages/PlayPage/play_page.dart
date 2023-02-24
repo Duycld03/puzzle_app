@@ -5,8 +5,14 @@ class PlayPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Text("Play Page"),
+    return Scaffold(
+      appBar: AppBar(title: const Text("Play")),
+      body: const Center(
+        child: Text(
+          "Play Page",
+          style: TextStyle(fontSize: 25),
+        ),
+      ),
     );
   }
 }

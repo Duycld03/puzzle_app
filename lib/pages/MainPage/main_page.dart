@@ -8,7 +8,7 @@ import 'package:puzzle_app/pages/SettingPage/setting_page.dart';
 class MainPage extends StatelessWidget {
   MainPage({super.key});
   final List<Widget> tabs = [
-    AddQuestionPage(),
+    const AddQuestionPage(),
     const HomePage(),
     const SettingPage(),
   ];
