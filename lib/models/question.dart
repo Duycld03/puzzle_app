@@ -1,5 +1,5 @@
 class Question {
-  static int id = 0;
+  int? id;
   String question;
   String answer;
   String optionA;
@@ -8,6 +8,7 @@ class Question {
   String optionD;
   int categoryID;
   Question({
+    this.id,
     required this.question,
     required this.answer,
     required this.optionA,
@@ -15,9 +16,7 @@ class Question {
     required this.optionC,
     required this.optionD,
     required this.categoryID,
-  }) {
-    id += 1;
-  }
+  });
   factory Question.fromMap(Map<String, dynamic> map) => Question(
         question: map["question_name"],
         answer: map["answer"],
@@ -28,7 +27,6 @@ class Question {
         categoryID: map["category_id"],
       );
   Map<String, dynamic> toMap() => {
-        "id": id,
         "question_name": question,
         "option_a": optionA,
         "option_b": optionB,

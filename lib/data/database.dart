@@ -26,7 +26,7 @@ class DBProvider {
       onOpen: (db) {},
       onCreate: (db, version) async {
         await db.execute('''CREATE TABLE user_questions (
-        id INTEGER PRIMARY KEY,
+        id INTEGER AUTOINCREMENT PRIMARY KEY,
         question_name TEXT,
         option_a TEXT,
         option_b TEXT,

@@ -1,5 +1,8 @@
 package com.example.puzzle_app
 
-import io.flutter.embedding.android.FlutterActivit
+import io.flutter.embedding.android.FlutterActivity
 
-class MainActivity : FlutterActivity(){}
+
+class MainActivity : FlutterActivity() {
+
+}
