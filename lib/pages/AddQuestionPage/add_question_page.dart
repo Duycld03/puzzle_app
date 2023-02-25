@@ -91,7 +91,7 @@ class AddQuestionPage extends StatelessWidget {
                           ])
                       .expand((w) => w),
                   DropdownButton(
-                    value: state.category,
+                    value: state.categoryID,
                     isExpanded: true,
                     underline: Container(
                       height: 2,

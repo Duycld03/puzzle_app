@@ -10,7 +10,7 @@ class QuestionFormState {
   final String answerB;
   final String answerC;
   final String answerD;
-  final int category;
+  final int categoryID;
 
   const QuestionFormState({
     required this.question,
@@ -19,7 +19,7 @@ class QuestionFormState {
     required this.answerB,
     required this.answerC,
     required this.answerD,
-    required this.category,
+    required this.categoryID,
     required this.questionCtrls,
     required this.textCtrls,
   });
@@ -39,7 +39,7 @@ class QuestionFormState {
     String? answerB,
     String? answerC,
     String? answerD,
-    int? category,
+    int? categoryID,
   }) =>
       QuestionFormState(
         question: question ?? this.question,
@@ -48,7 +48,7 @@ class QuestionFormState {
         answerB: answerB ?? this.answerB,
         answerC: answerC ?? this.answerC,
         answerD: answerD ?? this.answerD,
-        category: category ?? this.category,
+        categoryID: categoryID ?? this.categoryID,
         questionCtrls: questionCtrls,
         textCtrls: textCtrls,
       );
@@ -63,7 +63,7 @@ class QuestionFormInitial extends QuestionFormState {
             answerB: "",
             answerC: "",
             answerD: "",
-            category: 0,
+            categoryID: 0,
             questionCtrls: TextEditingController(),
             textCtrls: [
               TextEditingController(),
@@ -82,7 +82,7 @@ class ClearQuestionForm extends QuestionFormState {
           answerB: "",
           answerC: "",
           answerD: "",
-          category: 0,
+          categoryID: 0,
           questionCtrls: TextEditingController(),
           textCtrls: [
             TextEditingController(),

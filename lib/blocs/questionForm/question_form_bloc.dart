@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:puzzle_app/data/database.dart';
+import 'package:puzzle_app/models/question.dart';
 
 part 'question_form_event.dart';
 part 'question_form_state.dart';
@@ -25,22 +27,24 @@ class QuestionFormBloc extends Bloc<QuestionFormEvent, QuestionFormState> {
       emit(state.copyWith(option: event.option));
     });
     on<CategoryChanged>((event, emit) {
-      emit(state.copyWith(category: event.category));
+      emit(state.copyWith(categoryID: event.category));
     });
     on<SubmitForm>((event, emit) => _submitForm(emit));
   }
   Future<void> _submitForm(Emitter emit) async {
     if (state.isValid) {
-      print("submit");
-      print(state.question);
-      print("lựa chọn đúng là ${state.option}");
-      print(state.answerA);
-      print(state.answerB);
-      print(state.answerC);
-      print(state.answerD);
-      print(state.category);
+      Question newQuestion = Question(
+          question: state.question,
+          answer: state.option,
+          optionA: state.answerA,
+          optionB: state.answerB,
+          optionC: state.answerC,
+          optionD: state.answerD,
+          categoryID: state.categoryID);
+      DBProvider.db.newQuestion(newQuestion).then((value) => print(value));
       _clearForm(emit);
     }
+    DBProvider.db.getAllQuestion().then((value) => print(value));
   }
 
   _clearForm(Emitter emit) {
