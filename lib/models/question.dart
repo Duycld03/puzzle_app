@@ -6,6 +6,7 @@ class Question {
   String optionB;
   String optionC;
   String optionD;
+  String? explain;
   int categoryID;
   Question({
     this.id,
@@ -15,6 +16,7 @@ class Question {
     required this.optionB,
     required this.optionC,
     required this.optionD,
+    this.explain,
     required this.categoryID,
   });
   factory Question.fromMap(Map<String, dynamic> map) => Question(
@@ -24,6 +26,7 @@ class Question {
         optionB: map["option_b"],
         optionC: map["option_c"],
         optionD: map["option_d"],
+        explain: map["explain"],
         categoryID: map["category_id"],
       );
   Map<String, dynamic> toMap() => {
@@ -33,6 +36,7 @@ class Question {
         "option_c": optionC,
         "option_d": optionD,
         "answer": answer,
+        "explain": explain ?? "",
         "category_id": categoryID,
       };
 }

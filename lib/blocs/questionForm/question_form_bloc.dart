@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:puzzle_app/data/database.dart';
+import 'package:puzzle_app/data/user_question_table.dart';
 import 'package:puzzle_app/models/question.dart';
 
 part 'question_form_event.dart';
@@ -41,10 +41,14 @@ class QuestionFormBloc extends Bloc<QuestionFormEvent, QuestionFormState> {
           optionC: state.answerC,
           optionD: state.answerD,
           categoryID: state.categoryID);
-      DBProvider.db.newQuestion(newQuestion).then((value) => print(value));
+      UserQuestionTable.instance
+          .newUserQuestion(newQuestion)
+          .then((value) => print(value));
       _clearForm(emit);
     }
-    DBProvider.db.getAllQuestion().then((value) => print(value));
+    UserQuestionTable.instance
+        .getAllUserQuestion()
+        .then((value) => print(value));
   }
 
   _clearForm(Emitter emit) {
