@@ -62,27 +62,35 @@ Mô tả trên là của truyện nào
                 padding: EdgeInsets.symmetric(
                     horizontal: size.width * 0.08,
                     vertical: size.height * 0.03),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: const [
-                    OptionButton(
-                      title: "Võ luyện đỉnh phong",
-                      color: Colors.pink,
+                child: LayoutBuilder(
+                  builder: (context, constraints) => SingleChildScrollView(
+                    child: ConstrainedBox(
+                      constraints:
+                          BoxConstraints(minHeight: constraints.maxHeight),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: const [
+                          OptionButton(
+                            title: "Võ luyện đỉnh phong",
+                            color: Colors.pink,
+                          ),
+                          OptionButton(
+                            title: "Bách luyện thành thần",
+                            color: Colors.purple,
+                          ),
+                          OptionButton(
+                            title: "Mục long sư",
+                            color: Colors.cyan,
+                          ),
+                          OptionButton(
+                            title: "Nhất niệm vĩnh hằng",
+                            color: Colors.orange,
+                          ),
+                        ],
+                      ),
                     ),
-                    OptionButton(
-                      title: "Bách luyện thành thần",
-                      color: Colors.purple,
-                    ),
-                    OptionButton(
-                      title: "Mục long sư",
-                      color: Colors.cyan,
-                    ),
-                    OptionButton(
-                      title: "Nhất niệm vĩnh hằng",
-                      color: Colors.orange,
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ),
