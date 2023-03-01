@@ -19,12 +19,11 @@ class DBProvider {
 
   initDB() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentsDirectory.path, "puzzleDB.db");
+    String path = join(documentsDirectory.path, "puzzleDb.db");
     bool dbExists = await File(path).exists();
     print(dbExists);
     if (!dbExists) {
-      ByteData data =
-          await rootBundle.load(join("assets/data", "questions.db"));
+      ByteData data = await rootBundle.load("assets/data/questions.db");
       List<int> bytes =
           data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
       await File(path).writeAsBytes(bytes, flush: true);

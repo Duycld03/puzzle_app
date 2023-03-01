@@ -7,3 +7,5 @@ class SelectedOption extends PlayEvent {
   final String option;
   SelectedOption({required this.option});
 }
+
+class LoadQuestions extends PlayEvent {}

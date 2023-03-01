@@ -35,6 +35,13 @@ class PlayState {
         topicID: topicID ?? this.topicID,
         categoryID: categoryID ?? this.categoryID,
       );
+  // Future<List<Question>> getQuestion() {
+  //   return QuestionTable.instance.getAllQuestion();
+  // }
+  Future<int> delay() async {
+    await Future.delayed(const Duration(milliseconds: 200));
+    return 0;
+  }
 
   minusLife() {
     life--;
@@ -49,7 +56,7 @@ class PlayInitial extends PlayState {
       : super(
           life: 3,
           question: "",
-          options: [],
+          options: ["", "", "", ""],
           answer: "",
           explain: "",
           topicID: 0,
@@ -62,10 +69,12 @@ class NextQuestion extends PlayState {
       : super(
           life: 3,
           question: "",
-          options: [],
+          options: ["", "", "", ""],
           answer: "",
           explain: "",
           topicID: 0,
           categoryID: 0,
         );
 }
+
+// class QuestionLoaded extends PlayState {}

@@ -20,7 +20,7 @@ class Question {
     required this.categoryID,
   });
   factory Question.fromMap(Map<String, dynamic> map) => Question(
-        question: map["question_name"],
+        question: map["name"],
         answer: map["answer"],
         optionA: map["option_a"],
         optionB: map["option_b"],
