@@ -11,11 +11,8 @@ class PlayBloc extends Bloc<PlayEvent, PlayState> {
   PlayBloc() : super(PlayInitial()) {
     on<SelectedOption>((event, emit) {
       print("selected option: ${event.option}");
-      if (event.option != state.currentQuestion!.answer) {
+      if (event.option != state.answer) {
         state.minusLife();
-        print(state.life);
-      } else {
-        print("you selected right");
         print(state.life);
       }
     });
@@ -31,12 +28,13 @@ class PlayBloc extends Bloc<PlayEvent, PlayState> {
             isGameOver: state.isGameOver,
           ),
         );
+        _nextAndChangeOptions();
       },
     );
     on<NextQuestion>(
       (event, emit) {
         print("Next question");
-        emit(state.copyWith(id: state.id! + 1));
+        _nextAndChangeOptions();
       },
     );
     on<GameOver>(
@@ -46,5 +44,26 @@ class PlayBloc extends Bloc<PlayEvent, PlayState> {
         Navigator.of(event.context).pushReplacementNamed(Routes.mainPage);
       },
     );
+  }
+  _nextAndChangeOptions() {
+    Question newQuestion = state.questions[state.id! + 1];
+    if (newQuestion.category == "Trắc Nghiệm") {
+      Map<String, dynamic> optionList = {
+        "A": newQuestion.optionA!,
+        "B": newQuestion.optionB!,
+        "C": newQuestion.optionC!,
+        "D": newQuestion.optionD!,
+      };
+      List<String> options = [];
+      String answer = optionList[newQuestion.answer];
+      optionList.forEach((key, value) {
+        options.add(value);
+      });
+      options.shuffle();
+      print(options);
+      emit(state.copyWith(id: state.id! + 1, options: options, answer: answer));
+    } else {
+      emit(state.copyWith(id: state.id! + 1));
+    }
   }
 }

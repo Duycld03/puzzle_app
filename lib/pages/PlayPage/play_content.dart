@@ -84,24 +84,24 @@ class _PlayContentState extends State<PlayContent> {
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             OptionButton(
-                              title: state.currentQuestion?.optionA ?? "",
+                              title: state.options[0],
                               color: Colors.pink,
-                              optionName: "A",
+                              optionName: state.options[0],
                             ),
                             OptionButton(
-                              title: state.currentQuestion?.optionB ?? "",
+                              title: state.options[1],
                               color: Colors.purple,
-                              optionName: "B",
+                              optionName: state.options[1],
                             ),
                             OptionButton(
-                              title: state.currentQuestion?.optionC ?? "",
+                              title: state.options[2],
                               color: Colors.cyan,
-                              optionName: "C",
+                              optionName: state.options[2],
                             ),
                             OptionButton(
-                              title: state.currentQuestion?.optionD ?? "",
+                              title: state.options[3],
                               color: Colors.orange,
-                              optionName: "D",
+                              optionName: state.options[3],
                             ),
                           ],
                         ),
