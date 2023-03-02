@@ -10,12 +10,10 @@ class PlayPage extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    return Scaffold(
-      body: SafeArea(
-        child: BlocProvider(
-          create: (context) => PlayBloc(),
-          child: PlayContent(size: size),
-        ),
+    return SafeArea(
+      child: BlocProvider(
+        create: (context) => PlayBloc(),
+        child: PlayContent(size: size),
       ),
     );
   }

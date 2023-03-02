@@ -1,7 +1,8 @@
 import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:puzzle_app/data/question_table.dart';
 import 'package:puzzle_app/models/question.dart';
+import 'package:puzzle_app/routes/routes.dart';
 
 part 'play_event.dart';
 part 'play_state.dart';
@@ -10,7 +11,7 @@ class PlayBloc extends Bloc<PlayEvent, PlayState> {
   PlayBloc() : super(PlayInitial()) {
     on<SelectedOption>((event, emit) {
       print("selected option: ${event.option}");
-      if (event.option != state.answer) {
+      if (event.option != state.currentQuestion!.answer) {
         state.minusLife();
         print(state.life);
       } else {
@@ -18,26 +19,32 @@ class PlayBloc extends Bloc<PlayEvent, PlayState> {
         print(state.life);
       }
     });
-    _checkGameOver() {}
-    on<LoadQuestions>((event, emit) async {
-      print("LoadQuestion");
-      final List<Question> list = await QuestionTable.instance.getAllQuestion();
-      Question q1 = list[0];
-      final List<String> options = [
-        q1.optionA,
-        q1.optionB,
-        q1.optionC,
-        q1.optionD,
-      ];
-      emit(
-        state.copyWith(
+    on<LoadQuestions>(
+      (event, emit) async {
+        final List<Question> list =
+            await QuestionTable.instance.getAllQuestion();
+        list.shuffle();
+        emit(
+          state.copyWith(
             life: state.life,
-            question: q1.question,
-            options: options,
-            answer: q1.answer,
-            topicID: 1,
-            categoryID: q1.categoryID),
-      );
-    });
+            questions: list,
+            isGameOver: state.isGameOver,
+          ),
+        );
+      },
+    );
+    on<NextQuestion>(
+      (event, emit) {
+        print("Next question");
+        emit(state.copyWith(id: state.id! + 1));
+      },
+    );
+    on<GameOver>(
+      (event, emit) {
+        print("Game Over");
+        emit(state.copyWith(isGameOver: false));
+        Navigator.of(event.context).pushReplacementNamed(Routes.mainPage);
+      },
+    );
   }
 }

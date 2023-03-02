@@ -1,25 +1,31 @@
 class Question {
   int? id;
+  String maker;
   String question;
   String answer;
-  String optionA;
-  String optionB;
-  String optionC;
-  String optionD;
+  String? optionA;
+  String? optionB;
+  String? optionC;
+  String? optionD;
   String? explain;
-  int categoryID;
+  String category;
+  int topicID;
   Question({
     this.id,
+    required this.maker,
     required this.question,
     required this.answer,
-    required this.optionA,
-    required this.optionB,
-    required this.optionC,
-    required this.optionD,
+    this.optionA,
+    this.optionB,
+    this.optionC,
+    this.optionD,
     this.explain,
-    required this.categoryID,
+    required this.category,
+    required this.topicID,
   });
   factory Question.fromMap(Map<String, dynamic> map) => Question(
+        id: map["id"],
+        maker: map["maker"],
         question: map["name"],
         answer: map["answer"],
         optionA: map["option_a"],
@@ -27,16 +33,20 @@ class Question {
         optionC: map["option_c"],
         optionD: map["option_d"],
         explain: map["explain"],
-        categoryID: map["category_id"],
+        category: map["category"],
+        topicID: map["topic_id"],
       );
   Map<String, dynamic> toMap() => {
-        "question_name": question,
-        "option_a": optionA,
-        "option_b": optionB,
-        "option_c": optionC,
-        "option_d": optionD,
+        "id": id,
+        "maker": maker,
+        "name": question,
+        "option_a": optionA ?? "",
+        "option_b": optionB ?? "",
+        "option_c": optionC ?? "",
+        "option_d": optionD ?? "",
         "answer": answer,
         "explain": explain ?? "",
-        "category_id": categoryID,
+        "category": category,
+        "topic_id": topicID,
       };
 }

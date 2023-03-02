@@ -28,14 +28,19 @@ class AnswerDChanged extends QuestionFormEvent {
   AnswerDChanged({required this.answerD});
 }
 
-class OptionsChanged extends QuestionFormEvent {
+class OptionChanged extends QuestionFormEvent {
   final String option;
-  OptionsChanged({required this.option});
+  OptionChanged({required this.option});
 }
 
 class CategoryChanged extends QuestionFormEvent {
-  final int category;
+  final String category;
   CategoryChanged({required this.category});
+}
+
+class TopicChanged extends QuestionFormEvent {
+  final int topicID;
+  TopicChanged({required this.topicID});
 }
 
 class SubmitForm extends QuestionFormEvent {}

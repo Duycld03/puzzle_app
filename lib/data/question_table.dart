@@ -14,7 +14,8 @@ class QuestionTable {
 
   Future<List<Question>> getAllQuestion() async {
     final db = await DBProvider.db.database;
-    var res = await db.query(tableName);
+    var res =
+        await db.query(tableName, where: "maker = ?", whereArgs: ["Admin"]);
     List<Question> list =
         res.isNotEmpty ? res.map((q) => Question.fromMap(q)).toList() : [];
     return list;

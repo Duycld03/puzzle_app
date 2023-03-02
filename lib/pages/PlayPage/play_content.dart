@@ -16,101 +16,102 @@ class PlayContent extends StatefulWidget {
 }
 
 class _PlayContentState extends State<PlayContent> {
+  List<Icon> _getLife(int life) {
+    List<Icon> icons = [];
+    for (int i = 0; i < life; i++) {
+      icons.add(const Icon(Icons.local_fire_department));
+    }
+    return icons;
+  }
+
   @override
   void initState() {
     context.read<PlayBloc>().add(LoadQuestions());
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<PlayBloc, PlayState>(
       builder: (context, state) {
-        return FutureBuilder(
-          future: state.delay(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Container(
-                    color: Colors.blue,
-                    height: widget.size.height * 0.08,
-                    child: const Text(
-                      "",
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  Expanded(
-                    child: Card(
-                      margin: EdgeInsets.symmetric(
-                          horizontal: widget.size.width * 0.08,
-                          vertical: widget.size.height * 0.05),
-                      color: Colors.blueGrey,
-                      child: SingleChildScrollView(
-                        child: Padding(
-                          padding: const EdgeInsets.all(20),
-                          child: Text(
-                            state.question,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
+        if (state.isGameOver) {
+          context.read<PlayBloc>().add(GameOver(context: context));
+        }
+        return Scaffold(
+          appBar: AppBar(
+            automaticallyImplyLeading: false,
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: _getLife(state.life),
+            ),
+          ),
+          body: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Expanded(
+                child: Card(
+                  margin: EdgeInsets.symmetric(
+                      horizontal: widget.size.width * 0.08,
+                      vertical: widget.size.height * 0.05),
+                  color: Colors.blueGrey,
+                  child: SingleChildScrollView(
                     child: Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: widget.size.width * 0.08,
-                          vertical: widget.size.height * 0.03),
-                      child: LayoutBuilder(
-                        builder: (context, constraints) =>
-                            SingleChildScrollView(
-                          child: ConstrainedBox(
-                            constraints: BoxConstraints(
-                                minHeight: constraints.maxHeight),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                OptionButton(
-                                  title: state.options[0],
-                                  color: Colors.pink,
-                                  optionName: "A",
-                                ),
-                                OptionButton(
-                                  title: state.options[1],
-                                  color: Colors.purple,
-                                  optionName: "B",
-                                ),
-                                OptionButton(
-                                  title: state.options[2],
-                                  color: Colors.cyan,
-                                  optionName: "C",
-                                ),
-                                OptionButton(
-                                  title: state.options[3],
-                                  color: Colors.orange,
-                                  optionName: "D",
-                                ),
-                              ],
-                            ),
-                          ),
+                      padding: const EdgeInsets.all(20),
+                      child: Text(
+                        state.currentQuestion?.question ?? "",
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
                         ),
                       ),
                     ),
                   ),
-                ],
-              );
-            }
-            return const Center(child: CircularProgressIndicator());
-          },
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: widget.size.width * 0.08,
+                      vertical: widget.size.height * 0.03),
+                  child: LayoutBuilder(
+                    builder: (context, constraints) => SingleChildScrollView(
+                      child: ConstrainedBox(
+                        constraints:
+                            BoxConstraints(minHeight: constraints.maxHeight),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            OptionButton(
+                              title: state.currentQuestion?.optionA ?? "",
+                              color: Colors.pink,
+                              optionName: "A",
+                            ),
+                            OptionButton(
+                              title: state.currentQuestion?.optionB ?? "",
+                              color: Colors.purple,
+                              optionName: "B",
+                            ),
+                            OptionButton(
+                              title: state.currentQuestion?.optionC ?? "",
+                              color: Colors.cyan,
+                              optionName: "C",
+                            ),
+                            OptionButton(
+                              title: state.currentQuestion?.optionD ?? "",
+                              color: Colors.orange,
+                              optionName: "D",
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         );
       },
     );

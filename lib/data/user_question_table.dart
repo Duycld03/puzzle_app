@@ -20,7 +20,8 @@ class UserQuestionTable {
 
   Future<List<Question>> getAllUserQuestion() async {
     final db = await DBProvider.db.database;
-    var res = await db.query(tableName);
+    var res =
+        await db.query(tableName, where: "maker = ?", whereArgs: ["User"]);
     List<Question> list =
         res.isNotEmpty ? res.map((q) => Question.fromMap(q)).toList() : [];
     return list;

@@ -9,3 +9,10 @@ class SelectedOption extends PlayEvent {
 }
 
 class LoadQuestions extends PlayEvent {}
+
+class NextQuestion extends PlayEvent {}
+
+class GameOver extends PlayEvent {
+  final BuildContext context;
+  GameOver({required this.context});
+}

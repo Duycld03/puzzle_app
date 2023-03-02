@@ -19,7 +19,7 @@ class DBProvider {
 
   initDB() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentsDirectory.path, "puzzleDb.db");
+    String path = join(documentsDirectory.path, "puzzle.db");
     bool dbExists = await File(path).exists();
     print(dbExists);
     if (!dbExists) {

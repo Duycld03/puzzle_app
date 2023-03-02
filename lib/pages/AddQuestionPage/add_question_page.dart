@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:puzzle_app/blocs/questionForm/question_form_bloc.dart';
-import 'package:puzzle_app/fake_data.dart';
+import 'package:puzzle_app/data/topic_table.dart';
 
 final List<String> options = ["A", "B", "C", "D"];
+final List<String> categories = ["Trắc nghiệm", "T/F", "Điền từ"];
 
 class AddQuestionPage extends StatelessWidget {
   const AddQuestionPage({super.key});
@@ -21,6 +22,22 @@ class AddQuestionPage extends StatelessWidget {
               child: ListView(
                 padding: const EdgeInsets.all(32),
                 children: [
+                  const Text("Chọn thể loại"),
+                  Row(
+                      children: categories
+                          .map((option) => [
+                                Radio<String>(
+                                  value: option,
+                                  groupValue: state.category,
+                                  onChanged: (value) => context
+                                      .read<QuestionFormBloc>()
+                                      .add(CategoryChanged(category: value!)),
+                                ),
+                                Text(option),
+                              ])
+                          .expand((w) => w)
+                          .toList()),
+                  const SizedBox(height: 32),
                   TextFormField(
                       controller: state.questionCtrls,
                       decoration: const InputDecoration(
@@ -42,7 +59,7 @@ class AddQuestionPage extends StatelessWidget {
                                   groupValue: state.option,
                                   onChanged: (value) => context
                                       .read<QuestionFormBloc>()
-                                      .add(OptionsChanged(option: value!)),
+                                      .add(OptionChanged(option: value!)),
                                 ),
                                 Text(option),
                                 const SizedBox(width: 16)
@@ -90,27 +107,33 @@ class AddQuestionPage extends StatelessWidget {
                             const SizedBox(height: 32),
                           ])
                       .expand((w) => w),
-                  DropdownButton(
-                    value: state.categoryID,
-                    isExpanded: true,
-                    underline: Container(
-                      height: 2,
-                      color: Colors.blue,
-                    ),
-                    items: fake_categories
-                        .asMap()
-                        .entries
-                        .map(
-                          (entry) => DropdownMenuItem(
-                            value: entry.key,
-                            child: Text(entry.value),
+                  FutureBuilder(
+                    future: TopicTable.instance.getAllTopic(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return DropdownButton(
+                          value: state.topicID,
+                          isExpanded: true,
+                          underline: Container(
+                            height: 2,
+                            color: Colors.blue,
                           ),
-                        )
-                        .toList(),
-                    onChanged: (category) {
-                      context
-                          .read<QuestionFormBloc>()
-                          .add(CategoryChanged(category: category!));
+                          items: snapshot.data!
+                              .map(
+                                (topic) => DropdownMenuItem(
+                                  value: topic.id,
+                                  child: Text(topic.name),
+                                ),
+                              )
+                              .toList(),
+                          onChanged: (topicID) {
+                            context
+                                .read<QuestionFormBloc>()
+                                .add(TopicChanged(topicID: topicID!));
+                          },
+                        );
+                      }
+                      return const Center(child: CircularProgressIndicator());
                     },
                   ),
                   const SizedBox(height: 32),
