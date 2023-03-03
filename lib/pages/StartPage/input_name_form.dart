@@ -40,7 +40,7 @@ class InputNameForm extends StatelessWidget {
           Padding(padding: EdgeInsets.only(top: size.height * 0.05)),
           ElevatedButton(
             onPressed: () {
-              Navigator.pushNamed(context, Routes.mainPage);
+              Navigator.pushReplacementNamed(context, Routes.mainPage);
             },
             child: Container(
               decoration: BoxDecoration(

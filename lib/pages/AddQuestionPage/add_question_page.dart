@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:puzzle_app/blocs/questionForm/question_form_bloc.dart';
 import 'package:puzzle_app/data/topic_table.dart';
+import 'package:puzzle_app/pages/AddQuestionPage/quiz_tab.dart';
+import 'package:puzzle_app/pages/AddQuestionPage/fill_tab.dart';
+import 'package:puzzle_app/pages/AddQuestionPage/tf_tab.dart';
 
-final List<String> options = ["A", "B", "C", "D"];
 final List<String> categories = ["Trắc nghiệm", "T/F", "Điền từ"];
 
 class AddQuestionPage extends StatelessWidget {
-  const AddQuestionPage({super.key});
+  AddQuestionPage({super.key});
+  List<Widget> tabs = [const QuizTab(), const TFTab(), const FillTab()];
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +20,6 @@ class AddQuestionPage extends StatelessWidget {
         body: BlocBuilder<QuestionFormBloc, QuestionFormState>(
           builder: (context, state) {
             return Form(
-              // key: _formKey,
               autovalidateMode: AutovalidateMode.onUserInteraction,
               child: ListView(
                 padding: const EdgeInsets.all(32),
@@ -27,12 +29,12 @@ class AddQuestionPage extends StatelessWidget {
                       children: categories
                           .map((option) => [
                                 Radio<String>(
-                                  value: option,
-                                  groupValue: state.category,
-                                  onChanged: (value) => context
-                                      .read<QuestionFormBloc>()
-                                      .add(CategoryChanged(category: value!)),
-                                ),
+                                    value: option,
+                                    groupValue: state.category,
+                                    onChanged: (value) {
+                                      context.read<QuestionFormBloc>().add(
+                                          CategoryChanged(category: value!));
+                                    }),
                                 Text(option),
                               ])
                           .expand((w) => w)
@@ -50,63 +52,27 @@ class AddQuestionPage extends StatelessWidget {
                             .add(QuestionChanged(question: value));
                       }),
                   const SizedBox(height: 32),
-                  const Text("Lựa chọn đúng"),
-                  Row(
-                      children: options
-                          .map((option) => [
-                                Radio<String>(
-                                  value: option,
-                                  groupValue: state.option,
-                                  onChanged: (value) => context
-                                      .read<QuestionFormBloc>()
-                                      .add(OptionChanged(option: value!)),
-                                ),
-                                Text(option),
-                                const SizedBox(width: 16)
-                              ])
-                          .expand((w) => w)
-                          .toList()),
+                  // tabs[state.category == "Trắc nghiệm" ? 0 : 1],
+                  tabs[state.category == categories[0]
+                      ? 0
+                      : state.category == categories[1]
+                          ? 1
+                          : 2],
+
+                  TextFormField(
+                      controller: state.explainCtrls,
+                      decoration: const InputDecoration(
+                          labelText: 'Giải thích (Nếu có)',
+                          border: OutlineInputBorder()),
+                      validator: (value) {
+                        return null;
+                      },
+                      onChanged: (value) {
+                        context
+                            .read<QuestionFormBloc>()
+                            .add(ExplainChanged(explain: value));
+                      }),
                   const SizedBox(height: 32),
-                  ...options
-                      .asMap()
-                      .entries
-                      .map((entry) => [
-                            TextFormField(
-                                controller: state.textCtrls[entry.key],
-                                decoration: InputDecoration(
-                                  labelText: "Lựa chọn ${entry.value}*",
-                                  border: const OutlineInputBorder(),
-                                ),
-                                validator: (v) => v!.isEmpty
-                                    ? "Vui lòng điền lựa chọn ${entry.value}"
-                                    : null,
-                                onChanged: (value) {
-                                  switch (entry.key) {
-                                    case 0:
-                                      context
-                                          .read<QuestionFormBloc>()
-                                          .add(AnswerAChanged(answerA: value));
-                                      break;
-                                    case 1:
-                                      context
-                                          .read<QuestionFormBloc>()
-                                          .add(AnswerBChanged(answerB: value));
-                                      break;
-                                    case 2:
-                                      context
-                                          .read<QuestionFormBloc>()
-                                          .add(AnswerCChanged(answerC: value));
-                                      break;
-                                    case 3:
-                                      context
-                                          .read<QuestionFormBloc>()
-                                          .add(AnswerDChanged(answerD: value));
-                                      break;
-                                  }
-                                }),
-                            const SizedBox(height: 32),
-                          ])
-                      .expand((w) => w),
                   FutureBuilder(
                     future: TopicTable.instance.getAllTopic(),
                     builder: (context, snapshot) {

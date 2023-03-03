@@ -33,6 +33,11 @@ class OptionChanged extends QuestionFormEvent {
   OptionChanged({required this.option});
 }
 
+class FillAnswerChanged extends QuestionFormEvent {
+  final String fillAnswer;
+  FillAnswerChanged({required this.fillAnswer});
+}
+
 class CategoryChanged extends QuestionFormEvent {
   final String category;
   CategoryChanged({required this.category});
@@ -41,6 +46,11 @@ class CategoryChanged extends QuestionFormEvent {
 class TopicChanged extends QuestionFormEvent {
   final int topicID;
   TopicChanged({required this.topicID});
+}
+
+class ExplainChanged extends QuestionFormEvent {
+  final String explain;
+  ExplainChanged({required this.explain});
 }
 
 class SubmitForm extends QuestionFormEvent {}
