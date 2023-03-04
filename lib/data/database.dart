@@ -3,7 +3,8 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:sqflite_common/sqlite_api.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 class DBProvider {
   DBProvider._();
@@ -17,7 +18,10 @@ class DBProvider {
     return _database!;
   }
 
-  initDB() async {
+  Future<Database> initDB() async {
+    sqfliteFfiInit();
+    var databaseFactory = databaseFactoryFfi;
+
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, "puzzle.db");
     bool dbExists = await File(path).exists();
@@ -28,47 +32,6 @@ class DBProvider {
           data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
       await File(path).writeAsBytes(bytes, flush: true);
     }
-    return await openDatabase(path, version: 1);
-
-    // return await openDatabase(
-    //   path,
-    //   version: 1,
-    //   onOpen: (db) {},
-    //   onCreate: (db, version) async {
-    //     await db.execute(
-    //       'CREATE TABLE categories(id INTEGER PRIMARY KEY AUTOINCREMENT, category_name TEXT)',
-    //     );
-
-    //     // tạo bảng user_questions với khóa ngoại category_id tham chiếu đến bảng categories
-    //     await db.execute('''
-    //       CREATE TABLE user_questions (
-    //       id INTEGER PRIMARY KEY AUTOINCREMENT,
-    //       question_name TEXT,
-    //       option_a TEXT,
-    //       option_b TEXT,
-    //       option_c TEXT,
-    //       option_d TEXT,
-    //       answer TEXT,
-    //       category_id INTEGER,
-    //       FOREIGN KEY(category_id) REFERENCES categories(id)
-    //       )
-    //     ''');
-
-    //     // tạo bảng questions với khóa ngoại category_id tham chiếu đến bảng categories
-    //     await db.execute('''
-    //       CREATE TABLE questions (
-    //       id INTEGER PRIMARY KEY AUTOINCREMENT,
-    //       question_name TEXT,
-    //       option_a TEXT,
-    //       option_b TEXT,
-    //       option_c TEXT,
-    //       option_d TEXT,
-    //       answer TEXT,
-    //       category_id INTEGER,
-    //       FOREIGN KEY(category_id) REFERENCES categories(id)
-    //       )
-    //     ''');
-    //   },
-    // );
+    return await databaseFactory.openDatabase(path);
   }
 }
