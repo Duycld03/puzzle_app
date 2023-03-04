@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:puzzle_app/data/question_table.dart';
+import 'package:puzzle_app/models/question.dart';
 
 part 'question_form_event.dart';
 part 'question_form_state.dart';
@@ -49,27 +51,46 @@ class QuestionFormBloc extends Bloc<QuestionFormEvent, QuestionFormState> {
     on<SubmitForm>((event, emit) => _submitForm(emit));
   }
   Future<void> _submitForm(Emitter emit) async {
-    // if (state.isValid) {
-    // Question newQuestion = Question(
-    //   maker: "User",
-    //   question: state.question,
-    //   answer: state.option,
-    //   optionA: state.answerA,
-    //   optionB: state.answerB,
-    //   optionC: state.answerC,
-    //   optionD: state.answerD,
-    //   topicID: state.topicID,
-    //   category: state.category,
-    //   explain: state.explain,
-    // );
-    //   UserQuestionTable.instance
-    //       .newUserQuestion(newQuestion)
-    //       .then((value) => print(value));
-    //   _clearForm(emit);
-    // }
-    // UserQuestionTable.instance
-    //     .getAllUserQuestion()
-    //     .then((value) => print(value));
+    if (state.isValid) {
+      late Question newQuestion;
+      if (state.category == "Trắc nghiệm") {
+        newQuestion = Question(
+          maker: "User",
+          question: state.question,
+          answer: state.option,
+          optionA: state.answerA,
+          optionB: state.answerB,
+          optionC: state.answerC,
+          optionD: state.answerD,
+          topicID: state.topicID,
+          category: state.category,
+          explain: state.explain,
+        );
+      } else if (state.category == "T/F") {
+        newQuestion = Question(
+          maker: "User",
+          question: state.question,
+          answer: state.option,
+          category: state.category,
+          topicID: state.topicID,
+          explain: state.explain,
+        );
+      } else {
+        newQuestion = Question(
+          maker: "User",
+          question: state.question,
+          answer: state.fillAnswer,
+          category: state.category,
+          topicID: state.topicID,
+          explain: state.explain,
+        );
+      }
+      QuestionTable.instance
+          .newUserQuestion(newQuestion)
+          .then((value) => print(value));
+      _clearForm(emit);
+    }
+    QuestionTable.instance.getAllUserQuestion().then((value) => print(value));
     print(state);
     _clearForm(emit);
   }

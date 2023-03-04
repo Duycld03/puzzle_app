@@ -19,7 +19,7 @@ class PlayBloc extends Bloc<PlayEvent, PlayState> {
     on<LoadQuestions>(
       (event, emit) async {
         final List<Question> list =
-            await QuestionTable.instance.getAllQuestion();
+            await QuestionTable.instance.getAllUserQuestion();
         list.shuffle();
         emit(
           state.copyWith(
@@ -28,13 +28,13 @@ class PlayBloc extends Bloc<PlayEvent, PlayState> {
             isGameOver: state.isGameOver,
           ),
         );
-        _nextAndChangeOptions();
+        _nextAndChangeOptions(emit);
       },
     );
     on<NextQuestion>(
       (event, emit) {
         print("Next question");
-        _nextAndChangeOptions();
+        _nextAndChangeOptions(emit);
       },
     );
     on<GameOver>(
@@ -45,25 +45,30 @@ class PlayBloc extends Bloc<PlayEvent, PlayState> {
       },
     );
   }
-  _nextAndChangeOptions() {
-    Question newQuestion = state.questions[state.id! + 1];
-    if (newQuestion.category == "Trắc Nghiệm") {
-      Map<String, dynamic> optionList = {
-        "A": newQuestion.optionA!,
-        "B": newQuestion.optionB!,
-        "C": newQuestion.optionC!,
-        "D": newQuestion.optionD!,
-      };
-      List<String> options = [];
-      String answer = optionList[newQuestion.answer];
-      optionList.forEach((key, value) {
-        options.add(value);
-      });
-      options.shuffle();
-      print(options);
-      emit(state.copyWith(id: state.id! + 1, options: options, answer: answer));
+  _nextAndChangeOptions(Emitter emit) {
+    if (state.questions.isNotEmpty) {
+      Question newQuestion = state.questions[state.id! + 1];
+      if (newQuestion.category == "Trắc nghiệm") {
+        Map<String, dynamic> optionList = {
+          "A": newQuestion.optionA!,
+          "B": newQuestion.optionB!,
+          "C": newQuestion.optionC!,
+          "D": newQuestion.optionD!,
+        };
+        List<String> options = [];
+        String answer = optionList[newQuestion.answer];
+        optionList.forEach((key, value) {
+          options.add(value);
+        });
+        options.shuffle();
+        print(options);
+        emit(state.copyWith(
+            id: state.id! + 1, options: options, answer: answer));
+      } else {
+        emit(state.copyWith(id: state.id! + 1));
+      }
     } else {
-      emit(state.copyWith(id: state.id! + 1));
+      print("empty");
     }
   }
 }

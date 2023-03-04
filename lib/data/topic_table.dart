@@ -20,16 +20,16 @@ class TopicTable {
     return list;
   }
 
-  Future<List<Map<String, dynamic>>?> getTopicByQuestion(int questionID) async {
-    final db = await DBProvider.db.database;
-    List<Map<String, dynamic>> maps = await db.query(
-      'foods JOIN categories ON questions.category_id = categories.id',
-      // lấy các trường từ cả hai bảng
-      columns: ['categories.id', 'categories.name'],
-      // điều kiện WHERE để lấy chỉ một món ăn dựa trên id
-      where: 'foods.id = ?',
-      whereArgs: [questionID],
-    );
-    return maps;
-  }
+  // Future<List<Map<String, dynamic>>?> getTopicByQuestion(int questionID) async {
+  //   final db = await DBProvider.db.database;
+  //   List<Map<String, dynamic>> maps = await db.query(
+  //     'foods JOIN categories ON questions.category_id = categories.id',
+  //     // lấy các trường từ cả hai bảng
+  //     columns: ['categories.id', 'categories.name'],
+  //     // điều kiện WHERE để lấy chỉ một món ăn dựa trên id
+  //     where: 'foods.id = ?',
+  //     whereArgs: [questionID],
+  //   );
+  //   return maps;
+  // }
 }
