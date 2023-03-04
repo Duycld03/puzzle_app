@@ -51,48 +51,49 @@ class QuestionFormBloc extends Bloc<QuestionFormEvent, QuestionFormState> {
     on<SubmitForm>((event, emit) => _submitForm(emit));
   }
   Future<void> _submitForm(Emitter emit) async {
-    if (state.isValid) {
-      late Question newQuestion;
-      if (state.category == "Trắc nghiệm") {
-        newQuestion = Question(
-          maker: "User",
-          question: state.question,
-          answer: state.option,
-          optionA: state.answerA,
-          optionB: state.answerB,
-          optionC: state.answerC,
-          optionD: state.answerD,
-          topicID: state.topicID,
-          category: state.category,
-          explain: state.explain,
-        );
-      } else if (state.category == "T/F") {
-        newQuestion = Question(
-          maker: "User",
-          question: state.question,
-          answer: state.option,
-          category: state.category,
-          topicID: state.topicID,
-          explain: state.explain,
-        );
-      } else {
-        newQuestion = Question(
-          maker: "User",
-          question: state.question,
-          answer: state.fillAnswer,
-          category: state.category,
-          topicID: state.topicID,
-          explain: state.explain,
-        );
-      }
-      QuestionTable.instance
-          .newUserQuestion(newQuestion)
-          .then((value) => print(value));
-      _clearForm(emit);
+    if (!state.isValid) {
+      return;
     }
-    QuestionTable.instance.getAllUserQuestion().then((value) => print(value));
-    print(state);
+    late Question newQuestion;
+    if (state.category == "Trắc Nghiệm") {
+      newQuestion = Question(
+        maker: "User",
+        question: state.question,
+        answer: state.option,
+        optionA: state.answerA,
+        optionB: state.answerB,
+        optionC: state.answerC,
+        optionD: state.answerD,
+        topicID: state.topicID,
+        category: state.category,
+        explain: state.explain,
+      );
+      return;
+    } else if (state.category == "T/F") {
+      newQuestion = Question(
+        maker: "User",
+        question: state.question,
+        answer: state.option,
+        category: state.category,
+        topicID: state.topicID,
+        explain: state.explain,
+      );
+    } else {
+      newQuestion = Question(
+        maker: "User",
+        question: state.question,
+        answer: state.fillAnswer,
+        category: state.category,
+        topicID: state.topicID,
+        explain: state.explain,
+      );
+    }
+    QuestionTable.instance
+        .newUserQuestion(newQuestion)
+        .then((value) => print(value));
     _clearForm(emit);
+
+    QuestionTable.instance.getAllUserQuestion().then((value) => print(value));
   }
 
   _clearForm(Emitter emit) {

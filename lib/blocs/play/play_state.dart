@@ -8,6 +8,7 @@ class PlayState {
   String? answer;
   bool isGameOver;
   List<String> options;
+  bool isLoaded = false;
 
   PlayState({
     required this.isGameOver,
@@ -17,6 +18,7 @@ class PlayState {
     this.id,
     required this.options,
     this.answer,
+    required this.isLoaded,
   }) {
     if (questions.isNotEmpty) {
       currentQuestion = questions[id ?? 0];
@@ -31,6 +33,7 @@ class PlayState {
     Question? currentQuestion,
     String? answer,
     List<String>? options,
+    bool? isLoaded,
   }) =>
       PlayState(
         id: id ?? this.id,
@@ -40,6 +43,7 @@ class PlayState {
         currentQuestion: currentQuestion ?? this.currentQuestion,
         answer: answer ?? this.answer,
         options: options ?? this.options,
+        isLoaded: isLoaded ?? this.isLoaded,
       );
   // Future<int> delay() async {
   //   await Future.delayed(const Duration(milliseconds: 200));
@@ -62,6 +66,7 @@ class PlayInitial extends PlayState {
           life: 3,
           questions: [],
           options: ["", "", "", ""],
+          isLoaded: false,
         );
 }
 

@@ -45,11 +45,12 @@ class QuestionTable {
 
   deleteUserQuestion(int id) async {
     final db = await DBProvider.db.database;
-    db.delete(tableName, where: "id = ?", whereArgs: [id]);
+    db.delete(tableName,
+        where: "maker = ? and id = ?", whereArgs: ["User", id]);
   }
 
-  deleteAllUserQuestion(int id) async {
+  deleteAllUserQuestion() async {
     final db = await DBProvider.db.database;
-    db.delete(tableName);
+    db.delete(tableName, where: "maker = ?", whereArgs: ["User"]);
   }
 }

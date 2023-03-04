@@ -6,7 +6,7 @@ import 'package:puzzle_app/pages/AddQuestionPage/quiz_tab.dart';
 import 'package:puzzle_app/pages/AddQuestionPage/fill_tab.dart';
 import 'package:puzzle_app/pages/AddQuestionPage/tf_tab.dart';
 
-final List<String> categories = ["Trắc nghiệm", "T/F", "Điền từ"];
+final List<String> categories = ["Trắc Nghiệm", "T/F", "Điền Từ"];
 
 class AddQuestionPage extends StatelessWidget {
   AddQuestionPage({super.key});
@@ -52,13 +52,11 @@ class AddQuestionPage extends StatelessWidget {
                             .add(QuestionChanged(question: value));
                       }),
                   const SizedBox(height: 32),
-                  // tabs[state.category == "Trắc nghiệm" ? 0 : 1],
                   tabs[state.category == categories[0]
                       ? 0
                       : state.category == categories[1]
                           ? 1
                           : 2],
-
                   TextFormField(
                       controller: state.explainCtrls,
                       decoration: const InputDecoration(

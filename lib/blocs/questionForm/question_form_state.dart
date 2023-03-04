@@ -85,7 +85,7 @@ class QuestionFormInitial extends QuestionFormState {
           question: "",
           option: "A",
           fillAnswer: "",
-          category: "Trắc nghiệm",
+          category: "Trắc Nghiệm",
           answerA: "",
           answerB: "",
           answerC: "",

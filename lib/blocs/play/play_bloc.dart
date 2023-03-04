@@ -19,7 +19,7 @@ class PlayBloc extends Bloc<PlayEvent, PlayState> {
     on<LoadQuestions>(
       (event, emit) async {
         final List<Question> list =
-            await QuestionTable.instance.getAllUserQuestion();
+            await QuestionTable.instance.getAllQuestion();
         list.shuffle();
         emit(
           state.copyWith(
@@ -29,6 +29,7 @@ class PlayBloc extends Bloc<PlayEvent, PlayState> {
           ),
         );
         _nextAndChangeOptions(emit);
+        emit(state.copyWith(isLoaded: true));
       },
     );
     on<NextQuestion>(
@@ -46,29 +47,32 @@ class PlayBloc extends Bloc<PlayEvent, PlayState> {
     );
   }
   _nextAndChangeOptions(Emitter emit) {
-    if (state.questions.isNotEmpty) {
-      Question newQuestion = state.questions[state.id! + 1];
-      if (newQuestion.category == "Trắc nghiệm") {
-        Map<String, dynamic> optionList = {
-          "A": newQuestion.optionA!,
-          "B": newQuestion.optionB!,
-          "C": newQuestion.optionC!,
-          "D": newQuestion.optionD!,
-        };
-        List<String> options = [];
-        String answer = optionList[newQuestion.answer];
-        optionList.forEach((key, value) {
-          options.add(value);
-        });
-        options.shuffle();
-        print(options);
-        emit(state.copyWith(
-            id: state.id! + 1, options: options, answer: answer));
-      } else {
-        emit(state.copyWith(id: state.id! + 1));
-      }
-    } else {
+    if (state.questions.isEmpty) {
       print("empty");
+      return;
     }
+    int id = 0;
+    if (state.isLoaded) {
+      id = state.id! + 1;
+    }
+    Question newQuestion = state.questions[id];
+    if (newQuestion.category != "Trắc Nghiệm") {
+      emit(state.copyWith(id: id));
+      return;
+    }
+    Map<String, dynamic> optionList = {
+      "A": newQuestion.optionA!,
+      "B": newQuestion.optionB!,
+      "C": newQuestion.optionC!,
+      "D": newQuestion.optionD!,
+    };
+    List<String> options = [];
+    String answer = optionList[newQuestion.answer];
+    optionList.forEach((key, value) {
+      options.add(value);
+    });
+    options.shuffle();
+    print(options);
+    emit(state.copyWith(id: id, options: options, answer: answer));
   }
 }

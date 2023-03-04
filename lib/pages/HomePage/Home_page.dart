@@ -48,7 +48,7 @@ class HomePage extends StatelessWidget {
           child: Text("Chơi Ngay"),
         ),
         onPressed: () {
-          Navigator.of(context).pushNamed(Routes.playPage);
+          Navigator.of(context).pushReplacementNamed(Routes.playPage);
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
