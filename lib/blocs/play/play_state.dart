@@ -8,17 +8,22 @@ class PlayState {
   String? answer;
   bool isGameOver;
   List<String> options;
+  String? fillOption;
+  TextEditingController fillOptionCtrls;
+
   bool isLoaded = false;
 
   PlayState({
     required this.isGameOver,
     required this.life,
     required this.questions,
+    required this.isLoaded,
+    required this.fillOption,
+    required this.options,
+    required this.fillOptionCtrls,
     this.currentQuestion,
     this.id,
-    required this.options,
     this.answer,
-    required this.isLoaded,
   }) {
     if (questions.isNotEmpty) {
       currentQuestion = questions[id ?? 0];
@@ -34,6 +39,8 @@ class PlayState {
     String? answer,
     List<String>? options,
     bool? isLoaded,
+    String? fillOption,
+    TextEditingController? fillOptionCtrls,
   }) =>
       PlayState(
         id: id ?? this.id,
@@ -44,11 +51,11 @@ class PlayState {
         answer: answer ?? this.answer,
         options: options ?? this.options,
         isLoaded: isLoaded ?? this.isLoaded,
+        fillOption: fillOption ?? this.fillOption,
+        fillOptionCtrls: fillOptionCtrls ?? this.fillOptionCtrls,
       );
-  // Future<int> delay() async {
-  //   await Future.delayed(const Duration(milliseconds: 200));
-  //   return 0;
-  // }
+
+  get isValid => fillOption!.isNotEmpty;
 
   minusLife() {
     life--;
@@ -67,16 +74,7 @@ class PlayInitial extends PlayState {
           questions: [],
           options: ["", "", "", ""],
           isLoaded: false,
+          fillOption: "",
+          fillOptionCtrls: TextEditingController(),
         );
 }
-
-// class NextQuestion extends PlayState {
-//   NextQuestion()
-//       : super(
-//           isGameOver: false,
-//           life: 3,
-//           questions: [],
-//         );
-// }
-
-// class QuestionLoaded extends PlayState {}

@@ -9,42 +9,17 @@ part 'play_state.dart';
 
 class PlayBloc extends Bloc<PlayEvent, PlayState> {
   PlayBloc() : super(PlayInitial()) {
-    on<SelectedOption>((event, emit) {
-      print("selected option: ${event.option}");
-      if (event.option != state.answer) {
-        state.minusLife();
-        print(state.life);
-      }
-    });
-    on<LoadQuestions>(
-      (event, emit) async {
-        final List<Question> list =
-            await QuestionTable.instance.getAllQuestion();
-        list.shuffle();
-        emit(
-          state.copyWith(
-            life: state.life,
-            questions: list,
-            isGameOver: state.isGameOver,
-          ),
-        );
-        _nextAndChangeOptions(emit);
-        emit(state.copyWith(isLoaded: true));
-      },
-    );
-    on<NextQuestion>(
-      (event, emit) {
-        print("Next question");
-        _nextAndChangeOptions(emit);
-      },
-    );
+    on<SelectedOption>((event, emit) => _selectedOption(event, emit));
+    on<LoadQuestions>((event, emit) => _loadQuestions(emit));
+    on<NextQuestion>((event, emit) => _nextAndChangeOptions(emit));
     on<GameOver>(
       (event, emit) {
-        print("Game Over");
         emit(state.copyWith(isGameOver: false));
         Navigator.of(event.context).pushReplacementNamed(Routes.mainPage);
       },
     );
+    on<FillOptionChanged>(
+        (event, emit) => emit(state.copyWith(fillOption: event.fillOption)));
   }
   _nextAndChangeOptions(Emitter emit) {
     if (state.questions.isEmpty) {
@@ -55,9 +30,15 @@ class PlayBloc extends Bloc<PlayEvent, PlayState> {
     if (state.isLoaded) {
       id = state.id! + 1;
     }
+    if (id == state.questions.length) {
+      print("end");
+      emit(state.copyWith(id: state.questions.length - 1));
+      return;
+    }
     Question newQuestion = state.questions[id];
     if (newQuestion.category != "Trắc Nghiệm") {
-      emit(state.copyWith(id: id));
+      state.fillOptionCtrls.clear();
+      emit(state.copyWith(id: id, fillOption: ""));
       return;
     }
     Map<String, dynamic> optionList = {
@@ -74,5 +55,39 @@ class PlayBloc extends Bloc<PlayEvent, PlayState> {
     options.shuffle();
     print(options);
     emit(state.copyWith(id: id, options: options, answer: answer));
+  }
+
+  _loadQuestions(Emitter emit) async {
+    final List<Question> list =
+        await QuestionTable.instance.getAllUserQuestion();
+    list.shuffle();
+    emit(
+      state.copyWith(
+        life: state.life,
+        questions: list,
+        isGameOver: state.isGameOver,
+      ),
+    );
+    _nextAndChangeOptions(emit);
+    emit(state.copyWith(isLoaded: true));
+  }
+
+  _selectedOption(SelectedOption event, Emitter emit) {
+    print("selected option: ${event.option}");
+    if (state.currentQuestion?.category == "Trắc Nghiệm") {
+      if (event.option != state.answer) {
+        state.minusLife();
+      }
+      return;
+    }
+    if (state.currentQuestion?.category == "T/F") {
+      if (event.option != state.currentQuestion?.answer) {
+        state.minusLife();
+      }
+      return;
+    }
+    if (event.option != state.currentQuestion?.answer) {
+      state.minusLife();
+    }
   }
 }

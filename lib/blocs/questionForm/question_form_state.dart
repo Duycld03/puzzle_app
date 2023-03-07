@@ -35,7 +35,8 @@ class QuestionFormState {
   });
 
   bool get isValid {
-    if (category == "Trắc nghiệm") {
+    print("valid...");
+    if (category == "Trắc Nghiệm") {
       return question.isNotEmpty &&
           option.isNotEmpty &&
           answerA.isNotEmpty &&

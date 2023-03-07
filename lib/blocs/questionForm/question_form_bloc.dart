@@ -68,7 +68,6 @@ class QuestionFormBloc extends Bloc<QuestionFormEvent, QuestionFormState> {
         category: state.category,
         explain: state.explain,
       );
-      return;
     } else if (state.category == "T/F") {
       newQuestion = Question(
         maker: "User",
@@ -82,7 +81,7 @@ class QuestionFormBloc extends Bloc<QuestionFormEvent, QuestionFormState> {
       newQuestion = Question(
         maker: "User",
         question: state.question,
-        answer: state.fillAnswer,
+        answer: state.fillAnswer.toLowerCase(),
         category: state.category,
         topicID: state.topicID,
         explain: state.explain,

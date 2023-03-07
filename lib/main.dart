@@ -4,7 +4,7 @@ import 'package:puzzle_app/routes/routes.dart';
 import 'package:puzzle_app/routes/router.dart' as router;
 import 'package:window_size/window_size.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
     setWindowFrame(const Rect.fromLTRB(0.0, 0.0, 432.0, 888.0));

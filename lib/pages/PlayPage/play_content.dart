@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:puzzle_app/blocs/play/play_bloc.dart';
-import 'package:puzzle_app/pages/PlayPage/option_button.dart';
+import 'package:puzzle_app/pages/PlayPage/fill_option.dart';
+import 'package:puzzle_app/pages/PlayPage/quiz_option.dart';
+import 'package:puzzle_app/pages/PlayPage/tf_option.dart';
 
 class PlayContent extends StatefulWidget {
   const PlayContent({
@@ -23,6 +25,12 @@ class _PlayContentState extends State<PlayContent> {
     }
     return icons;
   }
+
+  final List<Widget> options = [
+    const QuizOption(),
+    const TFOption(),
+    const FillOption()
+  ];
 
   @override
   void initState() {
@@ -74,40 +82,12 @@ class _PlayContentState extends State<PlayContent> {
                   padding: EdgeInsets.symmetric(
                       horizontal: widget.size.width * 0.08,
                       vertical: widget.size.height * 0.03),
-                  child: LayoutBuilder(
-                    builder: (context, constraints) => SingleChildScrollView(
-                      child: ConstrainedBox(
-                        constraints:
-                            BoxConstraints(minHeight: constraints.maxHeight),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            OptionButton(
-                              title: state.options[0],
-                              color: Colors.pink,
-                              optionName: state.options[0],
-                            ),
-                            OptionButton(
-                              title: state.options[1],
-                              color: Colors.purple,
-                              optionName: state.options[1],
-                            ),
-                            OptionButton(
-                              title: state.options[2],
-                              color: Colors.cyan,
-                              optionName: state.options[2],
-                            ),
-                            OptionButton(
-                              title: state.options[3],
-                              color: Colors.orange,
-                              optionName: state.options[3],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
+                  child:
+                      options[state.currentQuestion?.category == "Trắc Nghiệm"
+                          ? 0
+                          : state.currentQuestion?.category == "T/F"
+                              ? 1
+                              : 2],
                 ),
               ),
             ],
