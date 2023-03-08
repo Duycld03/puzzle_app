@@ -1,24 +1,48 @@
 part of 'navbar_bloc.dart';
 
 @immutable
-abstract class NavbarState {
-  final String title = "";
-  final int itemIndex = 0;
+class NavbarState {
+  final String title;
+  final int itemIndex;
+  final String? name;
+  final int totalQuestionPlayed;
+  final int totalCorrectQuestion;
+  final int totalIncorrectQuestion;
+  const NavbarState({
+    required this.title,
+    required this.itemIndex,
+    required this.totalQuestionPlayed,
+    required this.totalCorrectQuestion,
+    required this.totalIncorrectQuestion,
+    this.name,
+  });
+  NavbarState copyWith({
+    String? title,
+    int? itemIndex,
+    String? name,
+    int? totalQuestionPlayed,
+    int? totalCorrectQuestion,
+    int? totalIncorrectQuestion,
+  }) =>
+      NavbarState(
+        title: title ?? this.title,
+        itemIndex: itemIndex ?? this.itemIndex,
+        name: name ?? this.name,
+        totalQuestionPlayed: totalQuestionPlayed ?? this.totalQuestionPlayed,
+        totalCorrectQuestion: totalCorrectQuestion ?? this.totalCorrectQuestion,
+        totalIncorrectQuestion:
+            totalIncorrectQuestion ?? this.totalIncorrectQuestion,
+      );
 }
 
-class ShowHome extends NavbarState {
-  String title = "Trang chủ";
-  int itemIndex = 1;
+class NavbarInitial extends NavbarState {
+  const NavbarInitial()
+      : super(
+          title: "Trang chủ",
+          itemIndex: 1,
+          name: "",
+          totalQuestionPlayed: 0,
+          totalCorrectQuestion: 0,
+          totalIncorrectQuestion: 0,
+        );
 }
-
-class ShowQuestion extends NavbarState {
-  String title = "Thêm Câu hỏi";
-  int itemIndex = 0;
-}
-
-class ShowSetting extends NavbarState {
-  String title = "Cài đặt";
-  int itemIndex = 2;
-}
-
-class NavbarInitial extends NavbarState {}

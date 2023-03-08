@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:puzzle_app/data/question_table.dart';
 import 'package:puzzle_app/models/question.dart';
 import 'package:puzzle_app/routes/routes.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'play_event.dart';
 part 'play_state.dart';
@@ -74,31 +75,50 @@ class PlayBloc extends Bloc<PlayEvent, PlayState> {
     emit(state.copyWith(isLoaded: true));
   }
 
-  _selectedOption(SelectedOption event, Emitter emit) {
+  _selectedOption(SelectedOption event, Emitter emit) async {
     print("selected option: ${event.option}");
+    final prefs = await SharedPreferences.getInstance();
     if (state.currentQuestion?.category == "Trắc Nghiệm") {
       if (event.option != state.answer) {
+        _incrementTotalIncorrectQuestion(prefs);
         state.minusLife();
         emit(state.copyWith(isCorrect: false, isShow: true));
         return;
       }
+      _incrementTotalCorrectQuestion(prefs);
       emit(state.copyWith(isCorrect: true, isShow: true));
       return;
     }
     if (state.currentQuestion?.category == "T/F") {
       if (event.option != state.currentQuestion?.answer) {
+        _incrementTotalIncorrectQuestion(prefs);
         state.minusLife();
         emit(state.copyWith(isCorrect: false, isShow: true));
         return;
       }
+      _incrementTotalCorrectQuestion(prefs);
       emit(state.copyWith(isCorrect: true, isShow: true));
       return;
     }
     if (event.option.toLowerCase() != state.currentQuestion?.answer) {
+      _incrementTotalIncorrectQuestion(prefs);
       state.minusLife();
       emit(state.copyWith(isCorrect: false, isShow: true));
       return;
     }
+    _incrementTotalCorrectQuestion(prefs);
     emit(state.copyWith(isCorrect: true, isShow: true));
+  }
+
+  _incrementTotalCorrectQuestion(SharedPreferences prefs) async {
+    const String key = "totalCorrectQuestion";
+    int count = prefs.getInt(key) ?? 0;
+    await prefs.setInt(key, ++count);
+  }
+
+  _incrementTotalIncorrectQuestion(SharedPreferences prefs) async {
+    const String key = "totalIncorrectQuestion";
+    int count = prefs.getInt(key) ?? 0;
+    await prefs.setInt(key, ++count);
   }
 }
