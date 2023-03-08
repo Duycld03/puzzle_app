@@ -7,6 +7,8 @@ class PlayState {
   Question? currentQuestion;
   String? answer;
   bool isGameOver;
+  bool isCorrect;
+  bool isShow;
   List<String> options;
   String? fillOption;
   TextEditingController fillOptionCtrls;
@@ -21,6 +23,8 @@ class PlayState {
     required this.fillOption,
     required this.options,
     required this.fillOptionCtrls,
+    required this.isCorrect,
+    required this.isShow,
     this.currentQuestion,
     this.id,
     this.answer,
@@ -41,6 +45,8 @@ class PlayState {
     bool? isLoaded,
     String? fillOption,
     TextEditingController? fillOptionCtrls,
+    bool? isCorrect,
+    bool? isShow,
   }) =>
       PlayState(
         id: id ?? this.id,
@@ -53,6 +59,8 @@ class PlayState {
         isLoaded: isLoaded ?? this.isLoaded,
         fillOption: fillOption ?? this.fillOption,
         fillOptionCtrls: fillOptionCtrls ?? this.fillOptionCtrls,
+        isCorrect: isCorrect ?? this.isCorrect,
+        isShow: isShow ?? this.isShow,
       );
 
   get isValid => fillOption!.isNotEmpty;
@@ -76,5 +84,7 @@ class PlayInitial extends PlayState {
           isLoaded: false,
           fillOption: "",
           fillOptionCtrls: TextEditingController(),
+          isCorrect: true,
+          isShow: false,
         );
 }

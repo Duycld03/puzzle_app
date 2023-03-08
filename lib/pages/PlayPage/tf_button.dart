@@ -28,7 +28,6 @@ class TFButton extends StatelessWidget {
                 context
                     .read<PlayBloc>()
                     .add(SelectedOption(option: optionName));
-                context.read<PlayBloc>().add(NextQuestion());
               },
               child: Text(title)),
         );

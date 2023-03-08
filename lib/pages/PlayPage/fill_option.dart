@@ -27,30 +27,30 @@ class FillOption extends StatelessWidget {
             ),
             const Padding(padding: EdgeInsets.only(top: 20)),
             ElevatedButton(
-                onPressed: () {
-                  if (state.isValid) {
-                    context
-                        .read<PlayBloc>()
-                        .add(SelectedOption(option: state.fillOption!));
-                    context.read<PlayBloc>().add(NextQuestion());
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text(
-                          "Câu trả lời không được để trống",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.red,
-                          ),
-                        ),
+              onPressed: () {
+                if (state.isValid) {
+                  context
+                      .read<PlayBloc>()
+                      .add(SelectedOption(option: state.fillOption!));
+                  return;
+                }
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text(
+                      "Câu trả lời không được để trống",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.red,
                       ),
-                    );
-                  }
-                },
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 15),
-                  child: Text("Trả lời"),
-                ))
+                    ),
+                  ),
+                );
+              },
+              child: const Padding(
+                padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 15),
+                child: Text("Trả lời"),
+              ),
+            )
           ],
         );
       },

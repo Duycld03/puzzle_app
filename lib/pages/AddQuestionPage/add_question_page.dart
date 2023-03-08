@@ -104,7 +104,9 @@ class AddQuestionPage extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () {
                       if (state.isValid) {
-                        context.read<QuestionFormBloc>().add(SubmitForm());
+                        context
+                            .read<QuestionFormBloc>()
+                            .add(SubmitForm(context: context));
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(

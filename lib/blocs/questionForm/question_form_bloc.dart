@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:puzzle_app/data/question_table.dart';
 import 'package:puzzle_app/models/question.dart';
+import 'package:quickalert/quickalert.dart';
 
 part 'question_form_event.dart';
 part 'question_form_state.dart';
@@ -48,9 +49,9 @@ class QuestionFormBloc extends Bloc<QuestionFormEvent, QuestionFormState> {
       emit(state.copyWith(explain: event.explain));
     }));
 
-    on<SubmitForm>((event, emit) => _submitForm(emit));
+    on<SubmitForm>((event, emit) => _submitForm(event, emit));
   }
-  Future<void> _submitForm(Emitter emit) async {
+  Future<void> _submitForm(SubmitForm event, Emitter emit) async {
     if (!state.isValid) {
       return;
     }
@@ -87,11 +88,29 @@ class QuestionFormBloc extends Bloc<QuestionFormEvent, QuestionFormState> {
         explain: state.explain,
       );
     }
-    QuestionTable.instance
-        .newUserQuestion(newQuestion)
-        .then((value) => print(value));
-    _clearForm(emit);
 
+    QuestionTable.instance.newUserQuestion(newQuestion).then((value) {
+      if (value != 0) {
+        QuickAlert.show(
+          context: event.context,
+          title: "Thêm thành công",
+          type: QuickAlertType.success,
+          onConfirmBtnTap: () {
+            Navigator.of(event.context).pop();
+          },
+        );
+        return;
+      }
+      QuickAlert.show(
+        context: event.context,
+        title: "Lỗi rồi",
+        type: QuickAlertType.error,
+        onConfirmBtnTap: () {
+          Navigator.of(event.context).pop();
+        },
+      );
+    });
+    _clearForm(emit);
     QuestionTable.instance.getAllUserQuestion().then((value) => print(value));
   }
 

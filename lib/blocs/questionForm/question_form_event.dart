@@ -53,4 +53,7 @@ class ExplainChanged extends QuestionFormEvent {
   ExplainChanged({required this.explain});
 }
 
-class SubmitForm extends QuestionFormEvent {}
+class SubmitForm extends QuestionFormEvent {
+  final BuildContext context;
+  SubmitForm({required this.context});
+}

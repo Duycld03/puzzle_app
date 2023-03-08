@@ -24,7 +24,6 @@ class OptionButton extends StatelessWidget {
                   const EdgeInsets.symmetric(vertical: 20, horizontal: 10)),
           onPressed: () {
             context.read<PlayBloc>().add(SelectedOption(option: optionName));
-            context.read<PlayBloc>().add(NextQuestion());
           },
           child: Text(
             title,

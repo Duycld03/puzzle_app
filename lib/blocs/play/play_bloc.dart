@@ -9,6 +9,8 @@ part 'play_state.dart';
 
 class PlayBloc extends Bloc<PlayEvent, PlayState> {
   PlayBloc() : super(PlayInitial()) {
+    on<ShowDialog>((event, emit) => emit(state.copyWith(isShow: true)));
+    on<HiddenDialog>((event, emit) => emit(state.copyWith(isShow: false)));
     on<SelectedOption>((event, emit) => _selectedOption(event, emit));
     on<LoadQuestions>((event, emit) => _loadQuestions(emit));
     on<NextQuestion>((event, emit) => _nextAndChangeOptions(emit));
@@ -77,17 +79,26 @@ class PlayBloc extends Bloc<PlayEvent, PlayState> {
     if (state.currentQuestion?.category == "Trắc Nghiệm") {
       if (event.option != state.answer) {
         state.minusLife();
+        emit(state.copyWith(isCorrect: false, isShow: true));
+        return;
       }
+      emit(state.copyWith(isCorrect: true, isShow: true));
       return;
     }
     if (state.currentQuestion?.category == "T/F") {
       if (event.option != state.currentQuestion?.answer) {
         state.minusLife();
+        emit(state.copyWith(isCorrect: false, isShow: true));
+        return;
       }
+      emit(state.copyWith(isCorrect: true, isShow: true));
       return;
     }
-    if (event.option != state.currentQuestion?.answer) {
+    if (event.option.toLowerCase() != state.currentQuestion?.answer) {
       state.minusLife();
+      emit(state.copyWith(isCorrect: false, isShow: true));
+      return;
     }
+    emit(state.copyWith(isCorrect: true, isShow: true));
   }
 }
