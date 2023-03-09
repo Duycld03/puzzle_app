@@ -8,10 +8,9 @@ part 'name_form_state.dart';
 class NameFormBloc extends Bloc<NameFormEvent, NameFormState> {
   NameFormBloc() : super(const NameFormInitial()) {
     on<NameChanged>((event, emit) => emit(state.copyWith(name: event.name)));
-    on<Load>((event, emit) async {
+    on<LoadName>((event, emit) async {
       final prefs = await SharedPreferences.getInstance();
       final String? name = prefs.getString("name");
-      print(name);
       if (name != null) {
         emit(state.copyWith(hasName: true));
       }

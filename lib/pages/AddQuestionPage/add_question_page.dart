@@ -114,8 +114,9 @@ class AddQuestionPage extends StatelessWidget {
                             content: Text(
                               "Vui lòng nhập đầy đủ thông tin!",
                               style: TextStyle(
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.bold),
+                                color: Colors.red,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         );

@@ -20,7 +20,7 @@ class _StartContentState extends State<StartContent> {
 
   @override
   void initState() {
-    context.read<NameFormBloc>().add(Load());
+    context.read<NameFormBloc>().add(LoadName());
     super.initState();
   }
 

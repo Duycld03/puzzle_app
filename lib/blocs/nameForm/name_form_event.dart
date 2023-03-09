@@ -8,6 +8,6 @@ class NameChanged extends NameFormEvent {
   NameChanged({required this.name});
 }
 
-class Load extends NameFormEvent {}
+class LoadName extends NameFormEvent {}
 
 class Start extends NameFormEvent {}

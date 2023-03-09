@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:puzzle_app/blocs/navbar/navbar_bloc.dart';
+import 'package:puzzle_app/blocs/setting/setting_bloc.dart';
 import 'package:puzzle_app/pages/AddQuestionPage/add_question_page.dart';
 import 'package:puzzle_app/pages/HomePage/home_page.dart';
 import 'package:puzzle_app/pages/SettingPage/setting_page.dart';
@@ -15,8 +16,11 @@ class MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => NavbarBloc(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => NavbarBloc()),
+        BlocProvider(create: (context) => SettingBloc()),
+      ],
       child: BlocBuilder<NavbarBloc, NavbarState>(
         builder: (context, state) {
           return Scaffold(

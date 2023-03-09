@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:puzzle_app/blocs/navbar/navbar_bloc.dart';
+import 'package:puzzle_app/blocs/setting/setting_bloc.dart';
 import 'package:puzzle_app/pages/HomePage/info_card.dart';
 import 'package:puzzle_app/routes/routes.dart';
 
@@ -15,6 +16,8 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     context.read<NavbarBloc>().add(HomeTab());
+    context.read<SettingBloc>().add(LoadSetting());
+
     super.initState();
   }
 

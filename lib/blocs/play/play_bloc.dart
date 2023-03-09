@@ -61,8 +61,14 @@ class PlayBloc extends Bloc<PlayEvent, PlayState> {
   }
 
   _loadQuestions(Emitter emit) async {
-    final List<Question> list =
-        await QuestionTable.instance.getAllUserQuestion();
+    final prefs = await SharedPreferences.getInstance();
+    bool isUserQuestionSet = prefs.getBool("isUserQuestionSet") ?? false;
+    late List<Question> list;
+    if (isUserQuestionSet) {
+      list = await QuestionTable.instance.getAllUserQuestion();
+    } else {
+      list = await QuestionTable.instance.getAllQuestion();
+    }
     list.shuffle();
     emit(
       state.copyWith(
