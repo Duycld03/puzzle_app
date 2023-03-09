@@ -3,21 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:puzzle_app/blocs/nameForm/name_form_bloc.dart';
 import 'package:puzzle_app/values/app_colors.dart';
 
-class InputNameForm extends StatefulWidget {
+class InputNameForm extends StatelessWidget {
   const InputNameForm({
     Key? key,
   }) : super(key: key);
-
-  @override
-  State<InputNameForm> createState() => _InputNameFormState();
-}
-
-class _InputNameFormState extends State<InputNameForm> {
-  @override
-  void initState() {
-    context.read<NameFormBloc>().add(Load());
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
