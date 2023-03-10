@@ -58,8 +58,7 @@ class _SettingPageState extends State<SettingPage> {
                   title: Text("Câu hỏi đã thêm"),
                 ),
                 onPressed: () {
-                  Navigator.of(context).pushNamed(Routes.userQuestionPage,
-                      arguments: {"context": context});
+                  Navigator.of(context).pushNamed(Routes.userQuestionPage);
                 },
               ),
             ],

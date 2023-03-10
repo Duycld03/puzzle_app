@@ -23,10 +23,8 @@ class Router {
       case "SettingPage":
         return MaterialPageRoute(builder: (context) => const SettingPage());
       case "UserQuestionPage":
-        final agrs = settings.arguments as Map;
-        final BuildContext context = agrs["context"];
         return MaterialPageRoute(
-            builder: (context) => UserQuestionPage(parentContext: context));
+            builder: (context) => const UserQuestionPage());
       default:
         return MaterialPageRoute(
           builder: (context) => Center(

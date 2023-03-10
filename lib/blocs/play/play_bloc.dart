@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:puzzle_app/data/question_table.dart';
 import 'package:puzzle_app/models/question.dart';
-import 'package:puzzle_app/routes/routes.dart';
+import 'package:quickalert/quickalert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'play_event.dart';
@@ -18,13 +18,25 @@ class PlayBloc extends Bloc<PlayEvent, PlayState> {
     on<GameOver>(
       (event, emit) {
         emit(state.copyWith(isGameOver: false));
-        Navigator.of(event.context).pushReplacementNamed(Routes.mainPage);
+        QuickAlert.show(
+            context: event.context,
+            type: QuickAlertType.custom,
+            title: "GameOver",
+            barrierDismissible: false,
+            widget: const Text("Thua Rồi"),
+            onConfirmBtnTap: () {
+              Navigator.of(event.context).pop();
+            });
+        // Navigator.of(event.context).pushReplacementNamed(Routes.mainPage);
       },
     );
     on<FillOptionChanged>(
         (event, emit) => emit(state.copyWith(fillOption: event.fillOption)));
   }
   _nextAndChangeOptions(Emitter emit) {
+    if(state.isGameOver){
+      
+    }
     if (state.questions.isEmpty) {
       print("empty");
       return;

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:puzzle_app/blocs/play/play_bloc.dart';
 import 'package:puzzle_app/pages/PlayPage/play_content.dart';
+import 'package:puzzle_app/routes/routes.dart';
 import 'package:quickalert/quickalert.dart';
 
 class PlayPage extends StatelessWidget {
@@ -36,6 +37,10 @@ class PlayPage extends StatelessWidget {
                   type: QuickAlertType.error,
                   onConfirmBtnTap: () {
                     Navigator.of(context).pop();
+                    if (state.isGameOver) {
+                      Navigator.of(context)
+                          .pushReplacementNamed(Routes.mainPage);
+                    }
                     context.read<PlayBloc>().add(NextQuestion());
                   },
                   barrierDismissible: false,

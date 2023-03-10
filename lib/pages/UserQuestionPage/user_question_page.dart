@@ -3,14 +3,39 @@ import 'package:puzzle_app/data/question_table.dart';
 import 'package:puzzle_app/models/question.dart';
 
 class UserQuestionPage extends StatelessWidget {
-  const UserQuestionPage({super.key, required this.parentContext});
-  final BuildContext parentContext;
+  const UserQuestionPage({super.key});
+  String _getAnswer(Question question) {
+    if (question.category == "T/F") {
+      if (question.answer == "A") {
+        return "True";
+      }
+      return "False";
+    }
+    if (question.category == "Trắc Nghiệm") {
+      switch (question.answer) {
+        case "A":
+          return question.optionA!;
+        case "B":
+          return question.optionB!;
+        case "C":
+          return question.optionC!;
+        case "D":
+          return question.optionD!;
+      }
+    }
+    return question.answer;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Tổng câu hỏi tự thêm"),
+        // leading: IconButton(
+        //   icon: const Icon(Icons.arrow_back),
+        //   onPressed: () =>
+        //       Navigator.of(context).pushReplacementNamed(Routes.mainPage),
+        // ),
       ),
       body: FutureBuilder(
         future: QuestionTable.instance.getAllUserQuestion(),
@@ -41,13 +66,7 @@ class UserQuestionPage extends StatelessWidget {
                       ),
                     ),
                     title: Text(question.question),
-                    subtitle: Text(
-                      question.category != "T/F"
-                          ? question.answer
-                          : question.answer == "A"
-                              ? "True"
-                              : "False",
-                    ),
+                    subtitle: Text(_getAnswer(question)),
                   ),
                 );
               },

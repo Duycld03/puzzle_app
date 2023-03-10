@@ -42,9 +42,6 @@ class _PlayContentState extends State<PlayContent> {
   Widget build(BuildContext context) {
     return BlocBuilder<PlayBloc, PlayState>(
       builder: (context, state) {
-        if (state.isGameOver) {
-          context.read<PlayBloc>().add(GameOver(context: context));
-        }
         return Scaffold(
           appBar: AppBar(
             automaticallyImplyLeading: false,
