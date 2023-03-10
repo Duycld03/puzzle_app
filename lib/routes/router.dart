@@ -5,6 +5,7 @@ import 'package:puzzle_app/pages/MainPage/main_page.dart';
 import 'package:puzzle_app/pages/PlayPage/play_page.dart';
 import 'package:puzzle_app/pages/SettingPage/setting_page.dart';
 import 'package:puzzle_app/pages/StartPage/start_page.dart';
+import 'package:puzzle_app/pages/UserQuestionPage/user_question_page.dart';
 
 class Router {
   static Route<dynamic>? generateRoute(RouteSettings settings) {
@@ -21,6 +22,11 @@ class Router {
         return MaterialPageRoute(builder: (context) => const PlayPage());
       case "SettingPage":
         return MaterialPageRoute(builder: (context) => const SettingPage());
+      case "UserQuestionPage":
+        final agrs = settings.arguments as Map;
+        final BuildContext context = agrs["context"];
+        return MaterialPageRoute(
+            builder: (context) => UserQuestionPage(parentContext: context));
       default:
         return MaterialPageRoute(
           builder: (context) => Center(

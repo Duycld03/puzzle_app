@@ -46,7 +46,10 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
           await QuestionTable.instance.getAllUserQuestion();
       if (list.isEmpty) {
         _changeQuestionSet(false);
-        emit(state.copyWith(isValid: false));
+        emit(state.copyWith(
+            questionSet: questionSet,
+            isUserQuestionSet: false,
+            isValid: false));
         return;
       }
       emit(state.copyWith(isValid: true));

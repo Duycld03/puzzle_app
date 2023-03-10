@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:puzzle_app/blocs/setting/setting_bloc.dart';
+import 'package:puzzle_app/routes/routes.dart';
 
 class SettingPage extends StatefulWidget {
   const SettingPage({super.key});
@@ -57,7 +58,8 @@ class _SettingPageState extends State<SettingPage> {
                   title: Text("Câu hỏi đã thêm"),
                 ),
                 onPressed: () {
-                  print("pressed");
+                  Navigator.of(context).pushNamed(Routes.userQuestionPage,
+                      arguments: {"context": context});
                 },
               ),
             ],
