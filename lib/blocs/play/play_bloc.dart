@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
+import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:puzzle_app/data/question_table.dart';
 import 'package:puzzle_app/models/question.dart';
-import 'package:quickalert/quickalert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'play_event.dart';
@@ -11,32 +11,27 @@ part 'play_state.dart';
 class PlayBloc extends Bloc<PlayEvent, PlayState> {
   PlayBloc() : super(PlayInitial()) {
     on<ShowDialog>((event, emit) => emit(state.copyWith(isShow: true)));
-    on<HiddenDialog>((event, emit) => emit(state.copyWith(isShow: false)));
+    on<HiddenDialog>((event, emit) {
+      emit(
+        state.copyWith(isShow: false, isTimeout: false, durationTimeout: 60),
+      );
+    });
     on<SelectedOption>((event, emit) => _selectedOption(event, emit));
     on<LoadQuestions>((event, emit) => _loadQuestions(emit));
     on<NextQuestion>((event, emit) => _nextAndChangeOptions(emit));
-    on<GameOver>(
-      (event, emit) {
-        emit(state.copyWith(isGameOver: false));
-        QuickAlert.show(
-            context: event.context,
-            type: QuickAlertType.custom,
-            title: "GameOver",
-            barrierDismissible: false,
-            widget: const Text("Thua Rồi"),
-            onConfirmBtnTap: () {
-              Navigator.of(event.context).pop();
-            });
-        // Navigator.of(event.context).pushReplacementNamed(Routes.mainPage);
-      },
-    );
     on<FillOptionChanged>(
-        (event, emit) => emit(state.copyWith(fillOption: event.fillOption)));
+      (event, emit) => emit(state.copyWith(fillOption: event.fillOption)),
+    );
+    on<Timeout>((event, emit) async {
+      final prefs = await SharedPreferences.getInstance();
+      _incrementTotalIncorrectQuestion(prefs);
+      state.minusLife();
+      emit(state.copyWith(isTimeout: true, isShow: true));
+    });
   }
   _nextAndChangeOptions(Emitter emit) {
-    if(state.isGameOver){
-      
-    }
+    if (state.isGameOver) {}
+    state.countdownCtrl.restart();
     if (state.questions.isEmpty) {
       print("empty");
       return;
@@ -52,7 +47,7 @@ class PlayBloc extends Bloc<PlayEvent, PlayState> {
     }
     Question newQuestion = state.questions[id];
     if (newQuestion.category != "Trắc Nghiệm") {
-      state.fillOptionCtrls.clear();
+      state.fillOptionCtrl.clear();
       emit(state.copyWith(id: id, fillOption: ""));
       return;
     }
@@ -94,7 +89,7 @@ class PlayBloc extends Bloc<PlayEvent, PlayState> {
   }
 
   _selectedOption(SelectedOption event, Emitter emit) async {
-    print("selected option: ${event.option}");
+    state.countdownCtrl.pause();
     final prefs = await SharedPreferences.getInstance();
     if (state.currentQuestion?.category == "Trắc Nghiệm") {
       if (event.option != state.answer) {

@@ -9,11 +9,13 @@ class PlayState {
   bool isGameOver;
   bool isCorrect;
   bool isShow;
+  bool isTimeout;
   List<String> options;
   String? fillOption;
-  TextEditingController fillOptionCtrls;
-
+  TextEditingController fillOptionCtrl;
+  CountDownController countdownCtrl;
   bool isLoaded = false;
+  int durationTimeout;
 
   PlayState({
     required this.isGameOver,
@@ -22,9 +24,12 @@ class PlayState {
     required this.isLoaded,
     required this.fillOption,
     required this.options,
-    required this.fillOptionCtrls,
+    required this.fillOptionCtrl,
     required this.isCorrect,
     required this.isShow,
+    required this.isTimeout,
+    required this.durationTimeout,
+    required this.countdownCtrl,
     this.currentQuestion,
     this.id,
     this.answer,
@@ -44,9 +49,12 @@ class PlayState {
     List<String>? options,
     bool? isLoaded,
     String? fillOption,
-    TextEditingController? fillOptionCtrls,
+    TextEditingController? fillOptionCtrl,
     bool? isCorrect,
     bool? isShow,
+    bool? isTimeout,
+    int? durationTimeout,
+    CountDownController? countdownCtrl,
   }) =>
       PlayState(
         id: id ?? this.id,
@@ -58,9 +66,12 @@ class PlayState {
         options: options ?? this.options,
         isLoaded: isLoaded ?? this.isLoaded,
         fillOption: fillOption ?? this.fillOption,
-        fillOptionCtrls: fillOptionCtrls ?? this.fillOptionCtrls,
+        fillOptionCtrl: fillOptionCtrl ?? this.fillOptionCtrl,
         isCorrect: isCorrect ?? this.isCorrect,
         isShow: isShow ?? this.isShow,
+        isTimeout: isTimeout ?? this.isTimeout,
+        durationTimeout: durationTimeout ?? this.durationTimeout,
+        countdownCtrl: countdownCtrl ?? this.countdownCtrl,
       );
 
   get isValid => fillOption!.isNotEmpty;
@@ -83,8 +94,11 @@ class PlayInitial extends PlayState {
           options: ["", "", "", ""],
           isLoaded: false,
           fillOption: "",
-          fillOptionCtrls: TextEditingController(),
+          fillOptionCtrl: TextEditingController(),
           isCorrect: true,
           isShow: false,
+          isTimeout: false,
+          durationTimeout: 60,
+          countdownCtrl: CountDownController(),
         );
 }

@@ -1,3 +1,4 @@
+import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:puzzle_app/blocs/play/play_bloc.dart';
@@ -45,9 +46,50 @@ class _PlayContentState extends State<PlayContent> {
         return Scaffold(
           appBar: AppBar(
             automaticallyImplyLeading: false,
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: _getLife(state.life),
+            title: Stack(
+              clipBehavior: Clip.none,
+              children: [
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  top: 0,
+                  bottom: 0,
+                  child: CircularCountDownTimer(
+                    width: 38,
+                    height: 38,
+                    duration: state.durationTimeout,
+                    controller: state.countdownCtrl,
+                    fillColor: Colors.white,
+                    ringColor: Colors.blue,
+                    strokeCap: StrokeCap.round,
+                    isReverse: true,
+                    textStyle: const TextStyle(
+                      fontSize: 14,
+                      color: Colors.white,
+                    ),
+                    onComplete: () {
+                      context.read<PlayBloc>().add(Timeout());
+                    },
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Row(
+                      children: [
+                        const Icon(Icons.question_answer_sharp),
+                        const Padding(padding: EdgeInsets.only(left: 8)),
+                        Text("${state.id! + 1}"),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: _getLife(state.life),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
           body: Column(

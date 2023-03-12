@@ -18,6 +18,25 @@ class PlayPage extends StatelessWidget {
         child: BlocListener<PlayBloc, PlayState>(
           listener: (context, state) {
             if (state.isShow) {
+              if (state.isTimeout) {
+                QuickAlert.show(
+                  context: context,
+                  title: "Hết thời gian rôi",
+                  text: state.currentQuestion?.explain,
+                  type: QuickAlertType.error,
+                  onConfirmBtnTap: () {
+                    Navigator.of(context).pop();
+                    if (state.isGameOver) {
+                      Navigator.of(context)
+                          .pushReplacementNamed(Routes.mainPage);
+                    }
+                    context.read<PlayBloc>().add(NextQuestion());
+                  },
+                  barrierDismissible: false,
+                );
+                context.read<PlayBloc>().add(HiddenDialog());
+                return;
+              }
               if (state.isCorrect) {
                 QuickAlert.show(
                   context: context,

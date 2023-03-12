@@ -16,7 +16,7 @@ class FillOption extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             TextFormField(
-              controller: state.fillOptionCtrls,
+              controller: state.fillOptionCtrl,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 hintText: "Nhập đáp án đúng nhất",

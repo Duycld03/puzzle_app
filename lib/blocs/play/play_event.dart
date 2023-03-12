@@ -21,7 +21,4 @@ class FillOptionChanged extends PlayEvent {
   FillOptionChanged({required this.fillOption});
 }
 
-class GameOver extends PlayEvent {
-  final BuildContext context;
-  GameOver({required this.context});
-}
+class Timeout extends PlayEvent {}
