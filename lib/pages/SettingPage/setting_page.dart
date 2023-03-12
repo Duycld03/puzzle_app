@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:group_button/group_button.dart';
 import 'package:puzzle_app/blocs/setting/setting_bloc.dart';
 import 'package:puzzle_app/routes/routes.dart';
 
@@ -50,6 +51,30 @@ class _SettingPageState extends State<SettingPage> {
                   ),
                 ],
               )),
+              ListTile(
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text("Thời gian"),
+                    GroupButton(
+                      controller: state.groupButtonCtrl,
+                      buttons: const [30, 45, 60],
+                      options: GroupButtonOptions(
+                        unselectedBorderColor: Colors.blue,
+                        unselectedTextStyle: const TextStyle(
+                          color: Colors.blue,
+                        ),
+                        borderRadius: BorderRadius.circular(100),
+                      ),
+                      onSelected: (value, index, isSelected) {
+                        context
+                            .read<SettingBloc>()
+                            .add(ChangeDurationTimeout(durationTimeout: value));
+                      },
+                    ),
+                  ],
+                ),
+              ),
               TextButton(
                 style: TextButton.styleFrom(
                   padding: EdgeInsets.zero,
@@ -65,6 +90,27 @@ class _SettingPageState extends State<SettingPage> {
           );
         },
       ),
+    );
+  }
+}
+
+class TimeoutSelectorButton extends StatelessWidget {
+  const TimeoutSelectorButton({
+    Key? key,
+    required this.title,
+  }) : super(key: key);
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        shape: const CircleBorder(),
+        padding: EdgeInsets.zero,
+        minimumSize: const Size(40, 40),
+      ),
+      onPressed: () {},
+      child: Text(title),
     );
   }
 }

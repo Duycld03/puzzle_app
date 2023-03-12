@@ -11,11 +11,15 @@ part 'play_state.dart';
 class PlayBloc extends Bloc<PlayEvent, PlayState> {
   PlayBloc() : super(PlayInitial()) {
     on<ShowDialog>((event, emit) => emit(state.copyWith(isShow: true)));
-    on<HiddenDialog>((event, emit) {
-      emit(
-        state.copyWith(isShow: false, isTimeout: false, durationTimeout: 60),
-      );
-    });
+    on<HiddenDialog>(
+      (event, emit) => emit(
+        state.copyWith(
+          isShow: false,
+          isTimeout: false,
+          durationTimeout: state.durationTimeout,
+        ),
+      ),
+    );
     on<SelectedOption>((event, emit) => _selectedOption(event, emit));
     on<LoadQuestions>((event, emit) => _loadQuestions(emit));
     on<NextQuestion>((event, emit) => _nextAndChangeOptions(emit));
@@ -31,7 +35,7 @@ class PlayBloc extends Bloc<PlayEvent, PlayState> {
   }
   _nextAndChangeOptions(Emitter emit) {
     if (state.isGameOver) {}
-    state.countdownCtrl.restart();
+    state.countdownCtrl.restart(duration: state.durationTimeout);
     if (state.questions.isEmpty) {
       print("empty");
       return;
@@ -70,6 +74,7 @@ class PlayBloc extends Bloc<PlayEvent, PlayState> {
   _loadQuestions(Emitter emit) async {
     final prefs = await SharedPreferences.getInstance();
     bool isUserQuestionSet = prefs.getBool("isUserQuestionSet") ?? false;
+    int durationTimeout = prefs.getInt("durationTimeout") ?? 30;
     late List<Question> list;
     if (isUserQuestionSet) {
       list = await QuestionTable.instance.getAllUserQuestion();
@@ -82,6 +87,7 @@ class PlayBloc extends Bloc<PlayEvent, PlayState> {
         life: state.life,
         questions: list,
         isGameOver: state.isGameOver,
+        durationTimeout: durationTimeout,
       ),
     );
     _nextAndChangeOptions(emit);

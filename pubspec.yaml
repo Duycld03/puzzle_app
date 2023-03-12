@@ -43,6 +43,7 @@ dependencies:
   sqlite3_flutter_libs: ^0.5.13
   quickalert: ^1.0.1
   circular_countdown_timer: ^0.2.3
+  group_button: ^5.2.2
 
 dev_dependencies:
   flutter_test:

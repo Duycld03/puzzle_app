@@ -98,7 +98,7 @@ class PlayInitial extends PlayState {
           isCorrect: true,
           isShow: false,
           isTimeout: false,
-          durationTimeout: 60,
+          durationTimeout: 30,
           countdownCtrl: CountDownController(),
         );
 }
