@@ -5,6 +5,7 @@ import 'package:puzzle_app/pages/MainPage/main_page.dart';
 import 'package:puzzle_app/pages/PlayPage/play_page.dart';
 import 'package:puzzle_app/pages/SettingPage/setting_page.dart';
 import 'package:puzzle_app/pages/StartPage/start_page.dart';
+import 'package:puzzle_app/pages/SummaryPage/summary_page.dart';
 import 'package:puzzle_app/pages/UserQuestionPage/user_question_page.dart';
 
 class Router {
@@ -25,6 +26,16 @@ class Router {
       case "UserQuestionPage":
         return MaterialPageRoute(
             builder: (context) => const UserQuestionPage());
+      case "SummaryPage":
+        final args = settings.arguments as Map;
+        final int totalCorrectQuestion = args["totalCorrectQuestion"];
+        final int totalIncorrectQuestion = args["totalIncorrectQuestion"];
+        return MaterialPageRoute(
+          builder: (context) => SummaryPage(
+            totalCorrectQuestion: totalCorrectQuestion,
+            totalIncorrectQuestion: totalIncorrectQuestion,
+          ),
+        );
       default:
         return MaterialPageRoute(
           builder: (context) => Center(

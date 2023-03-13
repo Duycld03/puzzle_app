@@ -10,7 +10,10 @@ class SelectedOption extends PlayEvent {
 
 class LoadQuestions extends PlayEvent {}
 
-class NextQuestion extends PlayEvent {}
+class NextQuestion extends PlayEvent {
+  final BuildContext context;
+  NextQuestion({required this.context});
+}
 
 class ShowDialog extends PlayEvent {}
 

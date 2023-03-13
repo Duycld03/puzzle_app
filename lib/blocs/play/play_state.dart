@@ -16,6 +16,8 @@ class PlayState {
   CountDownController countdownCtrl;
   bool isLoaded = false;
   int durationTimeout;
+  int totalCorrectQuestion;
+  int totalIncorrectQuestion;
 
   PlayState({
     required this.isGameOver,
@@ -30,6 +32,8 @@ class PlayState {
     required this.isTimeout,
     required this.durationTimeout,
     required this.countdownCtrl,
+    required this.totalCorrectQuestion,
+    required this.totalIncorrectQuestion,
     this.currentQuestion,
     this.id,
     this.answer,
@@ -55,6 +59,8 @@ class PlayState {
     bool? isTimeout,
     int? durationTimeout,
     CountDownController? countdownCtrl,
+    int? totalCorrectQuestion,
+    int? totalIncorrectQuestion,
   }) =>
       PlayState(
         id: id ?? this.id,
@@ -72,6 +78,9 @@ class PlayState {
         isTimeout: isTimeout ?? this.isTimeout,
         durationTimeout: durationTimeout ?? this.durationTimeout,
         countdownCtrl: countdownCtrl ?? this.countdownCtrl,
+        totalCorrectQuestion: totalCorrectQuestion ?? this.totalCorrectQuestion,
+        totalIncorrectQuestion:
+            totalIncorrectQuestion ?? this.totalIncorrectQuestion,
       );
 
   get isValid => fillOption!.isNotEmpty;
@@ -100,5 +109,7 @@ class PlayInitial extends PlayState {
           isTimeout: false,
           durationTimeout: 30,
           countdownCtrl: CountDownController(),
+          totalCorrectQuestion: 0,
+          totalIncorrectQuestion: 0,
         );
 }

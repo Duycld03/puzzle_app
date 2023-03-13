@@ -5,4 +5,5 @@ class Routes {
   static const String addQuestionPage = "AddQuestionPage";
   static const String playPage = "PlayPage";
   static const String userQuestionPage = "UserQuestionPage";
+  static const String summaryPage = "SummaryPage";
 }

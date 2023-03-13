@@ -3,6 +3,7 @@ import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:puzzle_app/data/question_table.dart';
 import 'package:puzzle_app/models/question.dart';
+import 'package:puzzle_app/routes/routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'play_event.dart';
@@ -22,7 +23,7 @@ class PlayBloc extends Bloc<PlayEvent, PlayState> {
     );
     on<SelectedOption>((event, emit) => _selectedOption(event, emit));
     on<LoadQuestions>((event, emit) => _loadQuestions(emit));
-    on<NextQuestion>((event, emit) => _nextAndChangeOptions(emit));
+    on<NextQuestion>((event, emit) => _nextAndChangeOptions(event, emit));
     on<FillOptionChanged>(
       (event, emit) => emit(state.copyWith(fillOption: event.fillOption)),
     );
@@ -30,10 +31,16 @@ class PlayBloc extends Bloc<PlayEvent, PlayState> {
       final prefs = await SharedPreferences.getInstance();
       _incrementTotalIncorrectQuestion(prefs);
       state.minusLife();
-      emit(state.copyWith(isTimeout: true, isShow: true));
+      emit(
+        state.copyWith(
+          isTimeout: true,
+          isShow: true,
+          totalIncorrectQuestion: state.totalIncorrectQuestion + 1,
+        ),
+      );
     });
   }
-  _nextAndChangeOptions(Emitter emit) {
+  _nextAndChangeOptions(NextQuestion? event, Emitter emit) {
     if (state.isGameOver) {}
     state.countdownCtrl.restart(duration: state.durationTimeout);
     if (state.questions.isEmpty) {
@@ -46,7 +53,11 @@ class PlayBloc extends Bloc<PlayEvent, PlayState> {
     }
     if (id == state.questions.length) {
       print("end");
-      emit(state.copyWith(id: state.questions.length - 1));
+      Navigator.of(event!.context)
+          .pushReplacementNamed(Routes.summaryPage, arguments: {
+        "totalCorrectQuestion": state.totalCorrectQuestion,
+        "totalIncorrectQuestion": state.totalIncorrectQuestion,
+      });
       return;
     }
     Question newQuestion = state.questions[id];
@@ -90,7 +101,7 @@ class PlayBloc extends Bloc<PlayEvent, PlayState> {
         durationTimeout: durationTimeout,
       ),
     );
-    _nextAndChangeOptions(emit);
+    _nextAndChangeOptions(null, emit);
     emit(state.copyWith(isLoaded: true));
   }
 
@@ -101,32 +112,68 @@ class PlayBloc extends Bloc<PlayEvent, PlayState> {
       if (event.option != state.answer) {
         _incrementTotalIncorrectQuestion(prefs);
         state.minusLife();
-        emit(state.copyWith(isCorrect: false, isShow: true));
+        emit(
+          state.copyWith(
+            isCorrect: false,
+            isShow: true,
+            totalIncorrectQuestion: state.totalIncorrectQuestion + 1,
+          ),
+        );
         return;
       }
       _incrementTotalCorrectQuestion(prefs);
-      emit(state.copyWith(isCorrect: true, isShow: true));
+      emit(
+        state.copyWith(
+          isCorrect: true,
+          isShow: true,
+          totalCorrectQuestion: state.totalCorrectQuestion + 1,
+        ),
+      );
       return;
     }
     if (state.currentQuestion?.category == "T/F") {
       if (event.option != state.currentQuestion?.answer) {
         _incrementTotalIncorrectQuestion(prefs);
         state.minusLife();
-        emit(state.copyWith(isCorrect: false, isShow: true));
+        emit(
+          state.copyWith(
+            isCorrect: false,
+            isShow: true,
+            totalIncorrectQuestion: state.totalIncorrectQuestion + 1,
+          ),
+        );
         return;
       }
       _incrementTotalCorrectQuestion(prefs);
-      emit(state.copyWith(isCorrect: true, isShow: true));
+      emit(
+        state.copyWith(
+          isCorrect: true,
+          isShow: true,
+          totalCorrectQuestion: state.totalCorrectQuestion + 1,
+        ),
+      );
       return;
     }
     if (event.option.toLowerCase() != state.currentQuestion?.answer) {
       _incrementTotalIncorrectQuestion(prefs);
       state.minusLife();
-      emit(state.copyWith(isCorrect: false, isShow: true));
+      emit(
+        state.copyWith(
+          isCorrect: false,
+          isShow: true,
+          totalIncorrectQuestion: state.totalIncorrectQuestion + 1,
+        ),
+      );
       return;
     }
     _incrementTotalCorrectQuestion(prefs);
-    emit(state.copyWith(isCorrect: true, isShow: true));
+    emit(
+      state.copyWith(
+        isCorrect: true,
+        isShow: true,
+        totalCorrectQuestion: state.totalCorrectQuestion + 1,
+      ),
+    );
   }
 
   _incrementTotalCorrectQuestion(SharedPreferences prefs) async {

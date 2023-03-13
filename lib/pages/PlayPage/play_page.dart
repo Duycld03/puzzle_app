@@ -28,9 +28,16 @@ class PlayPage extends StatelessWidget {
                     Navigator.of(context).pop();
                     if (state.isGameOver) {
                       Navigator.of(context)
-                          .pushReplacementNamed(Routes.mainPage);
+                          .pushReplacementNamed(Routes.summaryPage, arguments: {
+                        "totalCorrectQuestion": state.totalCorrectQuestion,
+                        "totalIncorrectQuestion": state.totalIncorrectQuestion,
+                      });
                     }
-                    context.read<PlayBloc>().add(NextQuestion());
+                    context.read<PlayBloc>().add(
+                          NextQuestion(
+                            context: context,
+                          ),
+                        );
                   },
                   barrierDismissible: false,
                 );
@@ -44,7 +51,11 @@ class PlayPage extends StatelessWidget {
                   type: QuickAlertType.info,
                   onConfirmBtnTap: () {
                     Navigator.of(context).pop();
-                    context.read<PlayBloc>().add(NextQuestion());
+                    context.read<PlayBloc>().add(
+                          NextQuestion(
+                            context: context,
+                          ),
+                        );
                   },
                   barrierDismissible: false,
                 );
@@ -58,9 +69,16 @@ class PlayPage extends StatelessWidget {
                     Navigator.of(context).pop();
                     if (state.isGameOver) {
                       Navigator.of(context)
-                          .pushReplacementNamed(Routes.mainPage);
+                          .pushReplacementNamed(Routes.summaryPage, arguments: {
+                        "totalCorrectQuestion": state.totalCorrectQuestion,
+                        "totalIncorrectQuestion": state.totalIncorrectQuestion,
+                      });
                     }
-                    context.read<PlayBloc>().add(NextQuestion());
+                    context.read<PlayBloc>().add(
+                          NextQuestion(
+                            context: context,
+                          ),
+                        );
                   },
                   barrierDismissible: false,
                 );
