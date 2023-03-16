@@ -34,7 +34,9 @@ class _StartContentState extends State<StartContent> {
             children: [
               Expanded(
                 flex: 1,
-                child: Container(color: Colors.amber),
+                child: Image.asset(
+                  "assets/images/logo.png",
+                ),
               ),
               const Expanded(
                 flex: 1,

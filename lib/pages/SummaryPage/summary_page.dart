@@ -30,7 +30,7 @@ class _SummaryPageState extends State<SummaryPage> {
             style: TextStyle(
               fontSize: 40,
               fontWeight: FontWeight.bold,
-              color: Colors.red,
+              color: Colors.purple,
             ),
           ),
           Text(

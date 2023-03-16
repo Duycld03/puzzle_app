@@ -154,7 +154,8 @@ class PlayBloc extends Bloc<PlayEvent, PlayState> {
       );
       return;
     }
-    if (event.option.toLowerCase() != state.currentQuestion?.answer) {
+    if (event.option.toLowerCase() !=
+        state.currentQuestion?.answer.toLowerCase()) {
       _incrementTotalIncorrectQuestion(prefs);
       state.minusLife();
       emit(

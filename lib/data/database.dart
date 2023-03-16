@@ -23,7 +23,7 @@ class DBProvider {
     var databaseFactory = databaseFactoryFfi;
 
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentsDirectory.path, "puzzle.db");
+    String path = join(documentsDirectory.path, "puzzleSQ.db");
     bool dbExists = await File(path).exists();
     print(dbExists);
     if (!dbExists) {
