@@ -1,4 +1,4 @@
-package com.example.puzzle_app
+package com.zi03.puzzle_game
 
 import io.flutter.embedding.android.FlutterActivity
 

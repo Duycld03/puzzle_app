@@ -6,8 +6,14 @@ import 'package:puzzle_app/pages/AddQuestionPage/add_question_page.dart';
 import 'package:puzzle_app/pages/HomePage/home_page.dart';
 import 'package:puzzle_app/pages/SettingPage/setting_page.dart';
 
-class MainPage extends StatelessWidget {
-  MainPage({super.key});
+class MainPage extends StatefulWidget {
+  const MainPage({super.key});
+
+  @override
+  State<MainPage> createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
   final List<Widget> tabs = [
     AddQuestionPage(),
     const HomePage(),
@@ -21,47 +27,67 @@ class MainPage extends StatelessWidget {
         BlocProvider(create: (context) => NavbarBloc()),
         BlocProvider(create: (context) => SettingBloc()),
       ],
-      child: BlocBuilder<NavbarBloc, NavbarState>(
-        builder: (context, state) {
-          return Scaffold(
-            appBar: AppBar(
-              centerTitle: true,
-              title: Text(state.title),
-            ),
-            body: tabs[state.itemIndex],
-            bottomNavigationBar: BottomNavigationBar(
-              type: BottomNavigationBarType.shifting,
-              currentIndex: state.itemIndex,
-              items: const [
-                BottomNavigationBarItem(
-                    label: "Câu hỏi",
-                    icon: Icon(Icons.question_answer),
-                    backgroundColor: Colors.red),
-                BottomNavigationBarItem(
-                    label: "Trang chủ",
-                    icon: Icon(Icons.home),
-                    backgroundColor: Colors.blue),
-                BottomNavigationBarItem(
-                    label: "Cài đặt",
-                    icon: Icon(Icons.settings),
-                    backgroundColor: Colors.green),
+      child: WillPopScope(
+        onWillPop: () async {
+          return await showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: const Text('Bạn có chắc muốn thoát không?'),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('Có'),
+                  onPressed: () => Navigator.pop(context, true),
+                ),
+                TextButton(
+                  child: const Text('Không'),
+                  onPressed: () => Navigator.pop(context, false),
+                ),
               ],
-              onTap: (value) {
-                switch (value) {
-                  case 0:
-                    context.read<NavbarBloc>().add(QuestionTab());
-                    break;
-                  case 1:
-                    context.read<NavbarBloc>().add(HomeTab());
-                    break;
-                  case 2:
-                    context.read<NavbarBloc>().add(SettingTab());
-                    break;
-                }
-              },
             ),
           );
         },
+        child: BlocBuilder<NavbarBloc, NavbarState>(
+          builder: (context, state) {
+            return Scaffold(
+              appBar: AppBar(
+                centerTitle: true,
+                title: Text(state.title),
+              ),
+              body: tabs[state.itemIndex],
+              bottomNavigationBar: BottomNavigationBar(
+                type: BottomNavigationBarType.shifting,
+                currentIndex: state.itemIndex,
+                items: const [
+                  BottomNavigationBarItem(
+                      label: "Câu hỏi",
+                      icon: Icon(Icons.question_answer),
+                      backgroundColor: Colors.red),
+                  BottomNavigationBarItem(
+                      label: "Trang chủ",
+                      icon: Icon(Icons.home),
+                      backgroundColor: Colors.blue),
+                  BottomNavigationBarItem(
+                      label: "Cài đặt",
+                      icon: Icon(Icons.settings),
+                      backgroundColor: Colors.green),
+                ],
+                onTap: (value) {
+                  switch (value) {
+                    case 0:
+                      context.read<NavbarBloc>().add(QuestionTab());
+                      break;
+                    case 1:
+                      context.read<NavbarBloc>().add(HomeTab());
+                      break;
+                    case 2:
+                      context.read<NavbarBloc>().add(SettingTab());
+                      break;
+                  }
+                },
+              ),
+            );
+          },
+        ),
       ),
     );
   }
