@@ -2,10 +2,10 @@ part of 'question_form_bloc.dart';
 
 @immutable
 class QuestionFormState {
-  final TextEditingController questionCtrls;
-  final List<TextEditingController> textCtrls;
-  final TextEditingController explainCtrls;
-  final TextEditingController fillAnswerCtrls;
+  final TextEditingController questionCtrl;
+  final List<TextEditingController> answerCtrls;
+  final TextEditingController explainCtrl;
+  final TextEditingController fillAnswerCtrl;
   final String question;
   final String option;
   final String fillAnswer;
@@ -16,6 +16,8 @@ class QuestionFormState {
   final String answerD;
   final String? explain;
   final int topicID;
+  final bool isSubmitting;
+  final String? submitError;
 
   const QuestionFormState({
     required this.question,
@@ -27,15 +29,17 @@ class QuestionFormState {
     required this.answerC,
     required this.answerD,
     required this.topicID,
+    required this.questionCtrl,
+    required this.answerCtrls,
+    required this.explainCtrl,
+    required this.fillAnswerCtrl,
     this.explain,
-    required this.questionCtrls,
-    required this.textCtrls,
-    required this.explainCtrls,
-    required this.fillAnswerCtrls,
+    this.isSubmitting = false,
+    this.submitError,
   });
 
+  /// Validate form based on category
   bool get isValid {
-    print("valid...");
     if (category == "Trắc Nghiệm") {
       return question.isNotEmpty &&
           option.isNotEmpty &&
@@ -61,6 +65,8 @@ class QuestionFormState {
     String? answerD,
     int? topicID,
     String? explain,
+    bool? isSubmitting,
+    String? submitError,
   }) =>
       QuestionFormState(
         question: question ?? this.question,
@@ -73,10 +79,12 @@ class QuestionFormState {
         answerD: answerD ?? this.answerD,
         topicID: topicID ?? this.topicID,
         explain: explain ?? this.explain,
-        questionCtrls: questionCtrls,
-        textCtrls: textCtrls,
-        explainCtrls: explainCtrls,
-        fillAnswerCtrls: fillAnswerCtrls,
+        questionCtrl: questionCtrl,
+        answerCtrls: answerCtrls,
+        explainCtrl: explainCtrl,
+        fillAnswerCtrl: fillAnswerCtrl,
+        isSubmitting: isSubmitting ?? this.isSubmitting,
+        submitError: submitError ?? this.submitError,
       );
 }
 
@@ -93,41 +101,14 @@ class QuestionFormInitial extends QuestionFormState {
           answerD: "",
           topicID: 1,
           explain: "",
-          questionCtrls: TextEditingController(),
-          textCtrls: [
+          questionCtrl: TextEditingController(),
+          answerCtrls: [
             TextEditingController(),
             TextEditingController(),
             TextEditingController(),
             TextEditingController(),
           ],
-          explainCtrls: TextEditingController(),
-          fillAnswerCtrls: TextEditingController(),
-        );
-}
-
-class ClearQuestionForm extends QuestionFormState {
-  @override
-  final String category;
-  ClearQuestionForm({required this.category})
-      : super(
-          question: "",
-          option: "A",
-          fillAnswer: "",
-          category: category,
-          answerA: "",
-          answerB: "",
-          answerC: "",
-          answerD: "",
-          topicID: 1,
-          explain: "",
-          questionCtrls: TextEditingController(),
-          textCtrls: [
-            TextEditingController(),
-            TextEditingController(),
-            TextEditingController(),
-            TextEditingController(),
-          ],
-          explainCtrls: TextEditingController(),
-          fillAnswerCtrls: TextEditingController(),
+          explainCtrl: TextEditingController(),
+          fillAnswerCtrl: TextEditingController(),
         );
 }
