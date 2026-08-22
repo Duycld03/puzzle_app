@@ -8,6 +8,7 @@ class NavbarState {
   final int totalQuestionPlayed;
   final int totalCorrectQuestion;
   final int totalIncorrectQuestion;
+
   const NavbarState({
     required this.title,
     required this.itemIndex,
@@ -16,6 +17,7 @@ class NavbarState {
     required this.totalIncorrectQuestion,
     this.name,
   });
+
   NavbarState copyWith({
     String? title,
     int? itemIndex,

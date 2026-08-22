@@ -10,7 +10,7 @@ class NameFormState {
     required this.hasName,
   });
 
-  get isValid => name.isNotEmpty;
+  bool get isValid => name.trim().isNotEmpty;
 
   NameFormState copyWith({
     String? name,
