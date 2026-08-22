@@ -39,6 +39,6 @@ class SettingInitial extends SettingState {
           isUserQuestionSet: false,
           isValid: true,
           groupButtonCtrl: GroupButtonController(),
-          durationTimeout: 0,
+          durationTimeout: 30,
         );
 }
